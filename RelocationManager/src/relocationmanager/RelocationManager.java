@@ -5,6 +5,12 @@ package relocationmanager;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import javax.swing.SpringLayout;
 
 /**
@@ -15,9 +21,23 @@ public class RelocationManager extends Frame implements WindowListener
 {
     Label lblContactName, lblContactType, lblPhoneNumber, lblWebsiteEmail, lblContactNotes, lblFind;
     TextField txtContactName, txtContactType, txtPhoneNumber, txtWebsiteEmail, txtFind;
-    TextArea txtContactNote;
+    TextArea txtContactNotes;
     Button btnNew, btnSave, btnDel, btnFind, btnExit, btnFirst, btnPrev, btnNext, btnLast;
 
+    int maxEntries = 100;     // Global variable to define the maximum size of the 3 arrays.
+    int numberOfEntries = 0;  // Global variable to remember how many actual entries are currently in the 3 arrays.
+    int currentEntry = 0;     // Global variable to remember which entry in the arrays we are currently focused on.
+    
+    // Declare the 3 arrays for storing the PC/IP data in memory - each has a maximum size of
+	//         maxEntries (currently equal to 100 entries)
+    String[] ContactName = new String[maxEntries];   
+    String[] ContactType = new String[maxEntries];
+    String[] PhoneNumber = new String[maxEntries];
+    String[] WebsiteEmail = new String[maxEntries];
+    String[] ContactNotes = new String[maxEntries];
+
+
+    
     public static void main(String[] args)
     {
         Frame myFrame = new RelocationManager();
@@ -109,7 +129,7 @@ public class RelocationManager extends Frame implements WindowListener
     
     public void LocateTextAreas(SpringLayout myTextAreaLayout)
     {
-        txtContactNote = LocateATextArea(myTextAreaLayout, txtContactNote, 5, 20, 130, 125);
+        txtContactNotes = LocateATextArea(myTextAreaLayout, txtContactNotes, 5, 20, 130, 125);
     }
 
     /**
@@ -196,6 +216,111 @@ public class RelocationManager extends Frame implements WindowListener
     public void windowDeactivated(WindowEvent we)
     {
     }
+    
+// Display the required data entry (record) in the Frame
+    // The calling method must specify the number (index) of the entry that this
+    //     method needs to currently display on screen.
+    public void displayEntry(int index)
+    {
+        // Take the required entry from the PCName array and display it
+        //      in the txtPCName TextField.
+        txtContactName.setText(ContactName[index]);
+        txtContactType.setText(ContactType[index]);
+        txtPhoneNumber.setText(PhoneNumber[index]);
+        txtWebsiteEmail.setText(WebsiteEmail[index]);
+        txtContactNotes.setText(PhoneNumber[index]);
+        currentEntry = index;
+    }
 
+    ///START FROM HERE//
+    
+    
+    // Take the current record displayed on screen and save it back into the 'currentEntry' position
+    //      of the 3 arrays.
+    public void saveEntry(int index)
+    {
+        // Take the current entry in the txtPCName TextField (on screen) and copy it 
+        //      into the appropriate (currentEntry) position of the PCName array.
+        PCName[index] = txtPCName.getText();
+        PCID[index] = txtPCID.getText();
+        IPAddresses[index] = txtIP.getText();
+		
+        // (If required) Call the method below that writes the data back to the data file.
+        writeFile();
+    }
 
+        
+    // Read in the data from the data file - IPAddresses.txt - one line at a time and store in the 3 arrays.
+    // Remember the number of entries read in, in the global variable: numberOfEntries.
+    public void readFile()
+    {
+        // Try to read in the data and if an exception occurs go to the Catch section 
+        try
+        {
+            // Set up vaious streams for reading in the content of the data file.
+            FileInputStream fstream = new FileInputStream("RelocationManager.txt");
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            
+            int i = 0;   // i is used as the line counter
+            String line; // line is used to temporarily store the line read in from the data file
+			
+            // Read a line from the data file into the buffer and then check whether
+            //      it is null.  The while loop continues until a line read in is null.
+            while ((line = br.readLine()) != null)
+            {
+                // Split the line of data (from the text file) and put each entry into the
+                //                                             temporary array - temp[]
+                String[] temp = line.split(";");
+
+                // Save each entry into its respective array:
+                PCName[i] = temp[0];      //Takes the first entry in temp and puts it in the PCName array at the current location
+                PCID[i] = temp[1];        //Takes the second entry in temp and puts it in the PCID array at the current location
+                IPAddresses[i] = temp[2]; //Takes the third entry in temp and puts it in the IPAddress array at the current location
+
+                i++;  // Increment i so we can keep a count of how many entries have been read in.
+            }
+
+            numberOfEntries = i;   // Set numberOfEntries equal to i, so as to remember how many entries are now in the arrays 
+
+            br.close();            // Close the BufferedReader
+            in.close();            // Close the DataInputStream
+            fstream.close();       // Close the FileInputStream
+        }
+        catch (Exception e)
+        {
+            // If an exception occurs, print an error message on the console.
+            System.err.println("Error Reading File: " + e.getMessage());
+        }
+    }
+
+    
+    // Write the data back out to the data file - one line at a time
+    // Note: You may wish to use a different data file name while initially
+    //       developing, so as not to accidently corrupt your input file.
+    public void writeFile()
+    {
+        // Try to print out the data and if an exception occurs go to the Catch section 
+        try
+        {
+            // After testing has been completed, replace the hard-coded filename: "IPAddresses_New.txt"
+            //       with the parameter variable: fileName 
+            // Set up a PrintWriter for printing the array content out to the data file.
+            PrintWriter out = new PrintWriter(new FileWriter("IPAddresses.txt"));
+            
+            // Print out each line of the array into your data file.
+            // Each line is printed out in the format:  PCName,PCID,IPAddress
+            for(int m = 0; m < numberOfEntries; m++){
+                out.println(PCName[m] +"," +PCID[m] + "," + IPAddresses[m]);
+            }
+
+            // Close the printFile (and in so doing, empty the print buffer)
+             out.close();
+        }
+        catch (Exception e)
+        {
+            // If an exception occurs, print an error message on the console.
+            System.err.println("Error Writing File: " + e.getMessage());
+        }
+    }
 }
