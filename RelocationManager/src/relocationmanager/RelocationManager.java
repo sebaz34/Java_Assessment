@@ -19,7 +19,7 @@ import javax.swing.SpringLayout;
 
 public class RelocationManager extends Frame implements WindowListener, ActionListener
 {
-    Label lblContactName, lblContactType, lblPhoneNumber, lblWebsiteEmail, lblContactNotes, lblFind;
+    Label lblContactName, lblContactType, lblPhoneNumber, lblWebsiteEmail, lblContactNotes, lblFind, lblTitle;
     TextField txtContactName, txtContactType, txtPhoneNumber, txtWebsiteEmail, txtFind;
     TextArea txtContactNotes;
     Button btnNew, btnSave, btnDel, btnFind, btnExit, btnFirst, btnPrev, btnNext, btnLast;
@@ -39,7 +39,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     public static void main(String[] args)
     {
         Frame myFrame = new RelocationManager();
-        myFrame.setSize(600,350);
+        myFrame.setSize(550,650);
         myFrame.setLocation(400, 200);
         myFrame.setResizable(false);
         myFrame.setVisible(true);
@@ -63,12 +63,16 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
   
     public void LocateLabels(SpringLayout myLabelLayout)
     {
-        lblContactName = LocateALabel(myLabelLayout, lblContactName, "Contact Name:", 23, 25);
-        lblContactType = LocateALabel(myLabelLayout, lblContactType, "Contact Type:", 23, 50);
-        lblPhoneNumber = LocateALabel(myLabelLayout, lblPhoneNumber, "Phone Number:", 23, 75);
-        lblWebsiteEmail = LocateALabel(myLabelLayout, lblWebsiteEmail, "Website or Email:", 23, 100);
-        lblContactNotes = LocateALabel(myLabelLayout, lblContactNotes, "Contact Notes:", 23, 125);
-        lblFind = LocateALabel(myLabelLayout, lblFind, "Find", 390, 25);
+        lblContactName = LocateALabel(myLabelLayout, lblContactName, "Contact Name:", 23, 125);
+        lblContactType = LocateALabel(myLabelLayout, lblContactType, "Contact Type:", 23, 150);
+        lblPhoneNumber = LocateALabel(myLabelLayout, lblPhoneNumber, "Phone Number:", 23, 175);
+        lblWebsiteEmail = LocateALabel(myLabelLayout, lblWebsiteEmail, "Website or Email:", 23, 200);
+        lblContactNotes = LocateALabel(myLabelLayout, lblContactNotes, "Contact Notes:", 23, 225);
+        lblFind = LocateALabel(myLabelLayout, lblFind, "Find", 390, 125);
+        lblTitle = LocateALabel(myLabelLayout, lblTitle, "Relocation Manager", 23, 25);
+        //LABEL COSMETICS
+        //Title label
+        lblTitle.setForeground(Color.BLUE);
     }
 
     public Label LocateALabel(SpringLayout myLabelLayout, Label myLabel, String  LabelCaption, int x, int y)
@@ -82,11 +86,11 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
    
     public void LocateTextFields(SpringLayout myTextFieldLayout)
     {
-        txtContactName  = LocateATextField(myTextFieldLayout, txtContactName, 20, 140, 25);
-        txtContactType = LocateATextField(myTextFieldLayout, txtContactType, 20, 140, 50);
-        txtPhoneNumber = LocateATextField(myTextFieldLayout, txtPhoneNumber, 20, 140, 75);
-        txtWebsiteEmail = LocateATextField(myTextFieldLayout, txtWebsiteEmail, 20, 140, 100);
-        txtFind = LocateATextField(myTextFieldLayout, txtFind, 10, 430, 25);
+        txtContactName  = LocateATextField(myTextFieldLayout, txtContactName, 20, 140, 125);
+        txtContactType = LocateATextField(myTextFieldLayout, txtContactType, 20, 140, 150);
+        txtPhoneNumber = LocateATextField(myTextFieldLayout, txtPhoneNumber, 20, 140, 175);
+        txtWebsiteEmail = LocateATextField(myTextFieldLayout, txtWebsiteEmail, 20, 140, 200);
+        txtFind = LocateATextField(myTextFieldLayout, txtFind, 10, 430, 125);
     }
 
        public TextField LocateATextField(SpringLayout myTextFieldLayout, TextField myTextField, int width, int x, int y)
@@ -101,7 +105,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     
     public void LocateTextAreas(SpringLayout myTextAreaLayout)
     {
-        txtContactNotes = LocateATextArea(myTextAreaLayout, txtContactNotes, 5, 25, 140, 125);
+        txtContactNotes = LocateATextArea(myTextAreaLayout, txtContactNotes, 5, 25, 140, 225);
     }
 
     public TextArea LocateATextArea(SpringLayout myTextAreaLayout, TextArea myTextArea, int height, int width, int x, int y)
@@ -116,15 +120,15 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
 
     public void LocateButtons(SpringLayout myButtonLayout)
     {
-        btnNew = LocateAButton(myButtonLayout, btnNew, "New", 420, 90, 80, 25);
-        btnSave = LocateAButton(myButtonLayout, btnSave, "Save", 420, 115, 80, 25);
-        btnDel = LocateAButton(myButtonLayout, btnDel, "Delete", 420, 140, 80, 25);
-        btnFind = LocateAButton(myButtonLayout, btnFind, "Find", 420, 50, 80, 25);
-        btnExit = LocateAButton(myButtonLayout, btnExit, "Exit", 420, 210, 80, 25);
-        btnFirst = LocateAButton(myButtonLayout, btnFirst, "|<", 400, 175, 30, 25);
-        btnPrev = LocateAButton(myButtonLayout, btnPrev, "<", 430, 175, 30, 25);
-        btnNext = LocateAButton(myButtonLayout, btnNext, ">", 460, 175, 30, 25);
-        btnLast = LocateAButton(myButtonLayout, btnLast, ">|", 490, 175, 30, 25);
+        btnNew = LocateAButton(myButtonLayout, btnNew, "New", 420, 190, 80, 25);
+        btnSave = LocateAButton(myButtonLayout, btnSave, "Save", 420, 215, 80, 25);
+        btnDel = LocateAButton(myButtonLayout, btnDel, "Delete", 420, 240, 80, 25);
+        btnFind = LocateAButton(myButtonLayout, btnFind, "Find", 420, 150, 80, 25);
+        btnExit = LocateAButton(myButtonLayout, btnExit, "Exit", 420, 310, 80, 25);
+        btnFirst = LocateAButton(myButtonLayout, btnFirst, "|<", 400, 275, 30, 25);
+        btnPrev = LocateAButton(myButtonLayout, btnPrev, "<", 430, 275, 30, 25);
+        btnNext = LocateAButton(myButtonLayout, btnNext, ">", 460, 275, 30, 25);
+        btnLast = LocateAButton(myButtonLayout, btnLast, ">|", 490, 275, 30, 25);
     }
 
         public Button LocateAButton(SpringLayout myButtonLayout, Button myButton, String  ButtonCaption, int x, int y, int w, int h)
