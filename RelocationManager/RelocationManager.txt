@@ -1,3 +1,6 @@
-Electricity Company;Utility Company;1122;www.electricitycompany…;Need to ring the Electricity Company to update
-The Phone Company;Utility Company;1234;www.the_phone_company...;Change of contact details can be updated via The Phone Company web portal.
-Our Internet Provider;Internet Company;3232;www.ourinternetprovider…;Change of contact details can be updated via The Internet Provider's web portal.
+Electricity Company;Utility Company;1122;www.electricitycompanyï¿½;Need to ring the Electricity Company to update;
+The Phone Company;Utility Company;1234;www.the_phone_company...;Change of contact details can be updated via The Phone Company web portal.;
+Our Internet Provider;Internet Company;3232;www.ourinternetproviderï¿½;Change of contact details can be updated via The Internet Provider's web portal.;
+Bob's Burgers;Burger Place;1800 Burgers;burger@burger.com;burgers	;
+Stevens chip shop;Chip Shop;1800 Chips;stevens@chips.com;This is a chip shop;
+Alfreds Alpacca Appliances;Alpacca Appliances;1800 Alpaccas;Alpaccas@appliances.com;This is a florist;

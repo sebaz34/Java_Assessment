@@ -1,7 +1,5 @@
 package relocationmanager;
 
-// With Sample Modularisation
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,12 +24,10 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     TextArea txtContactNotes;
     Button btnNew, btnSave, btnDel, btnFind, btnExit, btnFirst, btnPrev, btnNext, btnLast;
 
-    int maxEntries = 100;     // Global variable to define the maximum size of the 3 arrays.
-    int numberOfEntries = 0;  // Global variable to remember how many actual entries are currently in the 3 arrays.
-    int currentEntry = 0;     // Global variable to remember which entry in the arrays we are currently focused on.
+    int maxEntries = 100;     
+    int numberOfEntries = 0;  
+    int currentEntry = 0;    
     
-    // Declare the 3 arrays for storing the PC/IP data in memory - each has a maximum size of
-	//         maxEntries (currently equal to 100 entries)
     String[] ContactName = new String[maxEntries];   
     String[] ContactType = new String[maxEntries];
     String[] PhoneNumber = new String[maxEntries];
@@ -57,7 +53,6 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         SpringLayout myLayout = new SpringLayout();
         setLayout(myLayout);
         
-	// Call the methods below to instantiate and place the various screen components
         LocateLabels(myLayout);
         LocateTextFields(myLayout);
         LocateTextAreas(myLayout);
@@ -65,10 +60,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
 
         this.addWindowListener(this);
     }
-
-    //------------------------------------------------------------------------------------------
-    // Method that manages the adding of multiple Labels to the screen.
-    // Each line requests the LocateALabel method to instantiate, add and place a specific Label  
+  
     public void LocateLabels(SpringLayout myLabelLayout)
     {
         lblContactName = LocateALabel(myLabelLayout, lblContactName, "Contact Name:", 23, 25);
@@ -79,15 +71,6 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         lblFind = LocateALabel(myLabelLayout, lblFind, "Find", 390, 25);
     }
 
-    /**
-    * Method with low coupling and high cohesion 
-    *    for adding individual labels:
-    *    - reduces overall code, especially in the
-    *         LocateLabels method.
-    *    - makes this method re-usable with minimal
-    *         adjustment as it is moved from one
-    *         program to another.
-    */
     public Label LocateALabel(SpringLayout myLabelLayout, Label myLabel, String  LabelCaption, int x, int y)
     {
         myLabel = new Label(LabelCaption);
@@ -97,29 +80,16 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         return myLabel;
     }
    
-
-    //------------------------------------------------------------------------------------------
-    // Method that manages the adding of multiple TextFields to the screen.
-    // Each line requests the LocateATextField method to instantiate, add and place a specific TextField  
     public void LocateTextFields(SpringLayout myTextFieldLayout)
     {
-        txtContactName  = LocateATextField(myTextFieldLayout, txtContactName, 20, 130, 25);
-        txtContactType = LocateATextField(myTextFieldLayout, txtContactType, 20, 130, 50);
-        txtPhoneNumber = LocateATextField(myTextFieldLayout, txtPhoneNumber, 20, 130, 75);
-        txtWebsiteEmail = LocateATextField(myTextFieldLayout, txtWebsiteEmail, 20, 130, 100);
+        txtContactName  = LocateATextField(myTextFieldLayout, txtContactName, 20, 140, 25);
+        txtContactType = LocateATextField(myTextFieldLayout, txtContactType, 20, 140, 50);
+        txtPhoneNumber = LocateATextField(myTextFieldLayout, txtPhoneNumber, 20, 140, 75);
+        txtWebsiteEmail = LocateATextField(myTextFieldLayout, txtWebsiteEmail, 20, 140, 100);
         txtFind = LocateATextField(myTextFieldLayout, txtFind, 10, 430, 25);
     }
 
-    /**
-    * Method with low coupling and high cohesion 
-    *    for adding individual text boxes:
-    *    - reduces overall code, especially in the
-    *         LocateTextFields method.
-    *    - makes this method re-usable with minimal
-    *         adjustment as it is moved from one
-    *         program to another.
-    */
-    public TextField LocateATextField(SpringLayout myTextFieldLayout, TextField myTextField, int width, int x, int y)
+       public TextField LocateATextField(SpringLayout myTextFieldLayout, TextField myTextField, int width, int x, int y)
     {
         myTextField = new TextField(width);
         add(myTextField);        
@@ -131,18 +101,9 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     
     public void LocateTextAreas(SpringLayout myTextAreaLayout)
     {
-        txtContactNotes = LocateATextArea(myTextAreaLayout, txtContactNotes, 5, 20, 130, 125);
+        txtContactNotes = LocateATextArea(myTextAreaLayout, txtContactNotes, 5, 25, 140, 125);
     }
 
-    /**
-    * Method with low coupling and high cohesion 
-    *    for adding individual text boxes:
-    *    - reduces overall code, especially in the
-    *         LocateTextFields method.
-    *    - makes this method re-usable with minimal
-    *         adjustment as it is moved from one
-    *         program to another.
-    */
     public TextArea LocateATextArea(SpringLayout myTextAreaLayout, TextArea myTextArea, int height, int width, int x, int y)
     {
         myTextArea = new TextArea(height, width);
@@ -152,35 +113,25 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         return myTextArea;
     }
 
-    //------------------------------------------------------------------------------------------
-    // Method that manages the adding of multiple Buttons to the screen.
-    // Each line requests the LocateAButton method to instantiate, add and place a specific Button  
+
     public void LocateButtons(SpringLayout myButtonLayout)
     {
         btnNew = LocateAButton(myButtonLayout, btnNew, "New", 420, 90, 80, 25);
         btnSave = LocateAButton(myButtonLayout, btnSave, "Save", 420, 115, 80, 25);
         btnDel = LocateAButton(myButtonLayout, btnDel, "Delete", 420, 140, 80, 25);
         btnFind = LocateAButton(myButtonLayout, btnFind, "Find", 420, 50, 80, 25);
-        btnExit = LocateAButton(myButtonLayout, btnExit, "Exit", 320, 170, 80, 25);
+        btnExit = LocateAButton(myButtonLayout, btnExit, "Exit", 420, 210, 80, 25);
         btnFirst = LocateAButton(myButtonLayout, btnFirst, "|<", 400, 175, 30, 25);
         btnPrev = LocateAButton(myButtonLayout, btnPrev, "<", 430, 175, 30, 25);
         btnNext = LocateAButton(myButtonLayout, btnNext, ">", 460, 175, 30, 25);
         btnLast = LocateAButton(myButtonLayout, btnLast, ">|", 490, 175, 30, 25);
     }
 
-    /**
-    * Method with low coupling and high cohesion 
-    *    for adding individual buttons:
-    *    - reduces overall code, especially in the
-    *         LocateButtons method.
-    *    - makes this method re-usable with minimal
-    *         adjustment as it is moved from one
-    *         program to another.
-    */
-    public Button LocateAButton(SpringLayout myButtonLayout, Button myButton, String  ButtonCaption, int x, int y, int w, int h)
+        public Button LocateAButton(SpringLayout myButtonLayout, Button myButton, String  ButtonCaption, int x, int y, int w, int h)
     {    
         myButton = new Button(ButtonCaption);
         add(myButton);
+        myButton.addActionListener(this);
         myButtonLayout.putConstraint(SpringLayout.WEST, myButton, x, SpringLayout.WEST, this);
         myButtonLayout.putConstraint(SpringLayout.NORTH, myButton, y, SpringLayout.NORTH, this);
         myButton.setPreferredSize(new Dimension(w,h));
@@ -189,6 +140,11 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
   
     public void actionPerformed(ActionEvent e)
     {
+        //FIND BUTTON
+        if(e.getSource() == btnFind)
+        {
+            search();
+        }
         //EXIT BUTTON
         if(e.getSource() == btnExit)
         {
@@ -198,23 +154,32 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         //NEW BUTTON
         if(e.getSource() == btnNew)
         {
-            writeFile();
+            if( numberOfEntries < maxEntries -1)
+            {
+                currentEntry = numberOfEntries;
+                resetTxtFields();
+                displayEntry(currentEntry);
+            }
         }
         
         //SAVE BUTTON
         if(e.getSource() == btnSave)
         {
-            saveEntry(currentEntry);
+            if(ContactName != null && currentEntry == numberOfEntries)
+            {
+                numberOfEntries++;
+                saveEntry(currentEntry);
+            }
+            else if (ContactName != null)
+            {
+                saveEntry(currentEntry);
+            }
         }
         
         //DELETE BUTTON
         if(e.getSource() == btnDel)
         {
-            txtContactName.setText("");
-            txtContactType.setText("");
-            txtPhoneNumber.setText("");
-            txtWebsiteEmail.setText("");
-            txtContactNotes.setText("");
+            resetTxtFields();
             saveEntry(currentEntry);
         }
         
@@ -227,13 +192,19 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         //PREVIOUS BUTTON
         if(e.getSource() == btnPrev)
         {
-            displayEntry(currentEntry - 1);
+            if(currentEntry != 0)
+            {
+                displayEntry(currentEntry - 1);
+            }
         }
         
         //NEXT BUTTON
         if(e.getSource() == btnNext)
         {
-            displayEntry(currentEntry + 1);
+            if(currentEntry < numberOfEntries - 1)
+            {
+                 displayEntry(currentEntry + 1);
+            }
         }
         
         //LAST BUTTON
@@ -243,7 +214,6 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         }
     }
 
-    // Manage responses to the various Window events
     public void windowClosing(WindowEvent we)
     {
         System.exit(0);
@@ -276,111 +246,103 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     {
     }
     
-// Display the required data entry (record) in the Frame
-    // The calling method must specify the number (index) of the entry that this
-    //     method needs to currently display on screen.
+    public void resetTxtFields()
+    {
+        txtContactName.setText("");
+        txtContactType.setText("");
+        txtPhoneNumber.setText("");
+        txtWebsiteEmail.setText("");
+        txtContactNotes.setText("");
+    }
+    
+    public void search()
+    {
+            boolean found = false;
+            int i = 0;
+            while (i < numberOfEntries && found == false)
+            {
+                if (ContactName[i].equals(txtFind.getText()))
+                {
+                    found = true;
+                }
+                i++;
+            }
+            if (found) 
+            {
+                currentEntry = i - 1;
+                displayEntry(currentEntry);
+            }
+    }
+    
     public void displayEntry(int index)
     {
-        // Take the required entry from the PCName array and display it
-        //      in the txtPCName TextField.
         txtContactName.setText(ContactName[index]);
         txtContactType.setText(ContactType[index]);
         txtPhoneNumber.setText(PhoneNumber[index]);
         txtWebsiteEmail.setText(WebsiteEmail[index]);
-        txtContactNotes.setText(PhoneNumber[index]);
+        txtContactNotes.setText(ContactNotes[index]);
         currentEntry = index;
     }
     
-    
-    // Take the current record displayed on screen and save it back into the 'currentEntry' position
-    //      of the 3 arrays.
     public void saveEntry(int index)
     {
-        // Take the current entry in the txtPCName TextField (on screen) and copy it 
-        //      into the appropriate (currentEntry) position of the PCName array.
         ContactName[index] = txtContactName.getText();
         ContactType[index] = txtContactType.getText();
         PhoneNumber[index] = txtPhoneNumber.getText();
         WebsiteEmail[index] = txtWebsiteEmail.getText();
         ContactNotes[index] = txtContactNotes.getText();
 		
-        // (If required) Call the method below that writes the data back to the data file.
         writeFile();
     }
 
-        
-    // Read in the data from the data file - IPAddresses.txt - one line at a time and store in the 3 arrays.
-    // Remember the number of entries read in, in the global variable: numberOfEntries.
     public void readFile()
     {
-        // Try to read in the data and if an exception occurs go to the Catch section 
         try
         {
-            // Set up vaious streams for reading in the content of the data file.
             FileInputStream fstream = new FileInputStream("RelocationManager.txt");
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             
-            int i = 0;   // i is used as the line counter
-            String line; // line is used to temporarily store the line read in from the data file
+            int i = 0;
+            String line;
 			
-            // Read a line from the data file into the buffer and then check whether
-            //      it is null.  The while loop continues until a line read in is null.
             while ((line = br.readLine()) != null)
             {
-                // Split the line of data (from the text file) and put each entry into the
-                //                                             temporary array - temp[]
                 String[] temp = line.split(";");
-
-                // Save each entry into its respective array:
-                ContactName[i] = temp[0];      //Takes the first entry in temp and puts it in the PCName array at the current location
-                ContactType[i] = temp[1];        //Takes the second entry in temp and puts it in the PCID array at the current location
+                ContactName[i] = temp[0];
+                ContactType[i] = temp[1];
                 PhoneNumber[i] = temp[2];
-                WebsiteEmail[i] = temp[3];       //Takes the third entry in temp and puts it in the IPAddress array at the current location
+                WebsiteEmail[i] = temp[3];
                 ContactNotes[i] = temp[4];
                 
-                i++;  // Increment i so we can keep a count of how many entries have been read in.
+                i++;
             }
 
-            numberOfEntries = i;   // Set numberOfEntries equal to i, so as to remember how many entries are now in the arrays 
+            numberOfEntries = i;
 
-            br.close();            // Close the BufferedReader
-            in.close();            // Close the DataInputStream
-            fstream.close();       // Close the FileInputStream
+            br.close();
+            in.close();
+            fstream.close();
         }
         catch (Exception e)
         {
-            // If an exception occurs, print an error message on the console.
+
             System.err.println("Error Reading File: " + e.getMessage());
         }
     }
 
-    
-    // Write the data back out to the data file - one line at a time
-    // Note: You may wish to use a different data file name while initially
-    //       developing, so as not to accidently corrupt your input file.
     public void writeFile()
     {
-        // Try to print out the data and if an exception occurs go to the Catch section 
         try
         {
-            // After testing has been completed, replace the hard-coded filename: "IPAddresses_New.txt"
-            //       with the parameter variable: fileName 
-            // Set up a PrintWriter for printing the array content out to the data file.
-            PrintWriter out = new PrintWriter(new FileWriter("IPAddresses.txt"));
-            
-            // Print out each line of the array into your data file.
-            // Each line is printed out in the format:  PCName,PCID,IPAddress
+            PrintWriter out = new PrintWriter(new FileWriter("RelocationManager.txt"));
             for(int m = 0; m < numberOfEntries; m++){
-                out.println(ContactName[m] +"," + ContactType[m] + "," + PhoneNumber[m] + "," + WebsiteEmail[m] + "," + ContactNotes[m] +",");
+                out.println(ContactName[m] +";" + ContactType[m] + ";" + PhoneNumber[m] + ";" + WebsiteEmail[m] + ";" + ContactNotes[m] +";");
             }
-
-            // Close the printFile (and in so doing, empty the print buffer)
              out.close();
         }
         catch (Exception e)
         {
-            // If an exception occurs, print an error message on the console.
             System.err.println("Error Writing File: " + e.getMessage());
         }
     }
