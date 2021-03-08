@@ -3,6 +3,8 @@ package relocationmanager;
 // With Sample Modularisation
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
@@ -17,7 +19,7 @@ import javax.swing.SpringLayout;
  * @author Mark O'Reilly
  */
 
-public class RelocationManager extends Frame implements WindowListener
+public class RelocationManager extends Frame implements WindowListener, ActionListener
 {
     Label lblContactName, lblContactType, lblPhoneNumber, lblWebsiteEmail, lblContactNotes, lblFind;
     TextField txtContactName, txtContactType, txtPhoneNumber, txtWebsiteEmail, txtFind;
@@ -185,6 +187,61 @@ public class RelocationManager extends Frame implements WindowListener
         return myButton;
     }
   
+    public void actionPerformed(ActionEvent e)
+    {
+        //EXIT BUTTON
+        if(e.getSource() == btnExit)
+        {
+            System.exit(0);
+        }
+        
+        //NEW BUTTON
+        if(e.getSource() == btnNew)
+        {
+            writeFile();
+        }
+        
+        //SAVE BUTTON
+        if(e.getSource() == btnSave)
+        {
+            saveEntry(currentEntry);
+        }
+        
+        //DELETE BUTTON
+        if(e.getSource() == btnDel)
+        {
+            txtContactName.setText("");
+            txtContactType.setText("");
+            txtPhoneNumber.setText("");
+            txtWebsiteEmail.setText("");
+            txtContactNotes.setText("");
+            saveEntry(currentEntry);
+        }
+        
+        //FIRST BUTTON
+        if(e.getSource() == btnFirst)
+        {
+            displayEntry(0);
+        }
+        
+        //PREVIOUS BUTTON
+        if(e.getSource() == btnPrev)
+        {
+            displayEntry(currentEntry - 1);
+        }
+        
+        //NEXT BUTTON
+        if(e.getSource() == btnNext)
+        {
+            displayEntry(currentEntry + 1);
+        }
+        
+        //LAST BUTTON
+        if(e.getSource() == btnLast)
+        {
+            displayEntry(numberOfEntries - 1);
+        }
+    }
 
     // Manage responses to the various Window events
     public void windowClosing(WindowEvent we)
@@ -198,6 +255,8 @@ public class RelocationManager extends Frame implements WindowListener
 
     public void windowOpened(WindowEvent we)
     {
+        readFile();
+        displayEntry(currentEntry);
     }
 
     public void windowClosed(WindowEvent we)
@@ -231,8 +290,6 @@ public class RelocationManager extends Frame implements WindowListener
         txtContactNotes.setText(PhoneNumber[index]);
         currentEntry = index;
     }
-
-    ///START FROM HERE//
     
     
     // Take the current record displayed on screen and save it back into the 'currentEntry' position
@@ -241,9 +298,11 @@ public class RelocationManager extends Frame implements WindowListener
     {
         // Take the current entry in the txtPCName TextField (on screen) and copy it 
         //      into the appropriate (currentEntry) position of the PCName array.
-        PCName[index] = txtPCName.getText();
-        PCID[index] = txtPCID.getText();
-        IPAddresses[index] = txtIP.getText();
+        ContactName[index] = txtContactName.getText();
+        ContactType[index] = txtContactType.getText();
+        PhoneNumber[index] = txtPhoneNumber.getText();
+        WebsiteEmail[index] = txtWebsiteEmail.getText();
+        ContactNotes[index] = txtContactNotes.getText();
 		
         // (If required) Call the method below that writes the data back to the data file.
         writeFile();
@@ -274,10 +333,12 @@ public class RelocationManager extends Frame implements WindowListener
                 String[] temp = line.split(";");
 
                 // Save each entry into its respective array:
-                PCName[i] = temp[0];      //Takes the first entry in temp and puts it in the PCName array at the current location
-                PCID[i] = temp[1];        //Takes the second entry in temp and puts it in the PCID array at the current location
-                IPAddresses[i] = temp[2]; //Takes the third entry in temp and puts it in the IPAddress array at the current location
-
+                ContactName[i] = temp[0];      //Takes the first entry in temp and puts it in the PCName array at the current location
+                ContactType[i] = temp[1];        //Takes the second entry in temp and puts it in the PCID array at the current location
+                PhoneNumber[i] = temp[2];
+                WebsiteEmail[i] = temp[3];       //Takes the third entry in temp and puts it in the IPAddress array at the current location
+                ContactNotes[i] = temp[4];
+                
                 i++;  // Increment i so we can keep a count of how many entries have been read in.
             }
 
@@ -311,7 +372,7 @@ public class RelocationManager extends Frame implements WindowListener
             // Print out each line of the array into your data file.
             // Each line is printed out in the format:  PCName,PCID,IPAddress
             for(int m = 0; m < numberOfEntries; m++){
-                out.println(PCName[m] +"," +PCID[m] + "," + IPAddresses[m]);
+                out.println(ContactName[m] +"," + ContactType[m] + "," + PhoneNumber[m] + "," + WebsiteEmail[m] + "," + ContactNotes[m] +",");
             }
 
             // Close the printFile (and in so doing, empty the print buffer)
