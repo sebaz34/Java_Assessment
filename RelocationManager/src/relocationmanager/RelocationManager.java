@@ -21,9 +21,9 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
 {
     //Screen objects declerations
     Label lblContactName, lblContactType, lblPhoneNumber, lblWebsiteEmail, lblContactNotes, lblFind, lblTitle;
-    TextField txtContactName, txtContactType, txtPhoneNumber, txtWebsiteEmail, txtFind;
+    TextField txtContactName, txtContactType, txtPhoneNumber, txtWebsiteEmail, txtFind, txtFilter;
     TextArea txtContactNotes;
-    Button btnNew, btnSave, btnDel, btnFind, btnExit, btnFirst, btnPrev, btnNext, btnLast;
+    Button btnNew, btnSave, btnDel, btnFind, btnExit, btnFirst, btnPrev, btnNext, btnLast, btnSortContactName, btnBinarySearch, btnFilterBy;
 
     //Global Variables for array management
     int maxEntries = 100;     
@@ -37,7 +37,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     public static void main(String[] args)
     {
         Frame myFrame = new RelocationManager();
-        myFrame.setSize(550,650);
+        myFrame.setSize(750,650);
         myFrame.setLocation(400, 200);
         myFrame.setResizable(false);
         myFrame.setVisible(true);
@@ -46,7 +46,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     public RelocationManager()
     {
         setTitle("Relocation Manager");
-        setBackground(Color.white);
+        setBackground(Color.pink);
 
         SpringLayout myLayout = new SpringLayout();
         setLayout(myLayout);
@@ -66,11 +66,12 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         lblPhoneNumber = LocateALabel(myLabelLayout, lblPhoneNumber, "Phone Number:", 23, 175);
         lblWebsiteEmail = LocateALabel(myLabelLayout, lblWebsiteEmail, "Website or Email:", 23, 200);
         lblContactNotes = LocateALabel(myLabelLayout, lblContactNotes, "Contact Notes:", 23, 225);
-        lblFind = LocateALabel(myLabelLayout, lblFind, "Find", 390, 125);
+        lblFind = LocateALabel(myLabelLayout, lblFind, "Find:", 545, 100);
         lblTitle = LocateALabel(myLabelLayout, lblTitle, "Relocation Manager", 23, 25);
         //LABEL COSMETICS
         //Title label
         lblTitle.setForeground(Color.BLUE);
+        
     }
 
     public Label LocateALabel(SpringLayout myLabelLayout, Label myLabel, String  LabelCaption, int x, int y)
@@ -84,11 +85,12 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
    
     public void LocateTextFields(SpringLayout myTextFieldLayout)
     {
-        txtContactName  = LocateATextField(myTextFieldLayout, txtContactName, 20, 140, 125);
-        txtContactType = LocateATextField(myTextFieldLayout, txtContactType, 20, 140, 150);
-        txtPhoneNumber = LocateATextField(myTextFieldLayout, txtPhoneNumber, 20, 140, 175);
-        txtWebsiteEmail = LocateATextField(myTextFieldLayout, txtWebsiteEmail, 20, 140, 200);
-        txtFind = LocateATextField(myTextFieldLayout, txtFind, 10, 430, 125);
+        txtContactName  = LocateATextField(myTextFieldLayout, txtContactName, 40, 140, 125);
+        txtContactType = LocateATextField(myTextFieldLayout, txtContactType, 40, 140, 150);
+        txtPhoneNumber = LocateATextField(myTextFieldLayout, txtPhoneNumber, 40, 140, 175);
+        txtWebsiteEmail = LocateATextField(myTextFieldLayout, txtWebsiteEmail, 40, 140, 200);
+        txtFind = LocateATextField(myTextFieldLayout, txtFind, 11, 510, 125);
+        txtFilter = LocateATextField(myTextFieldLayout, txtFilter, 15, 550, 350);
     }
 
        public TextField LocateATextField(SpringLayout myTextFieldLayout, TextField myTextField, int width, int x, int y)
@@ -103,7 +105,8 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     
     public void LocateTextAreas(SpringLayout myTextAreaLayout)
     {
-        txtContactNotes = LocateATextArea(myTextAreaLayout, txtContactNotes, 5, 25, 140, 225);
+        txtContactNotes = LocateATextArea(myTextAreaLayout, txtContactNotes, 5, 42, 140, 225);
+        
     }
 
     public TextArea LocateATextArea(SpringLayout myTextAreaLayout, TextArea myTextArea, int height, int width, int x, int y)
@@ -118,15 +121,18 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
 
     public void LocateButtons(SpringLayout myButtonLayout)
     {
-        btnNew = LocateAButton(myButtonLayout, btnNew, "New", 420, 190, 80, 25);
-        btnSave = LocateAButton(myButtonLayout, btnSave, "Save", 420, 215, 80, 25);
-        btnDel = LocateAButton(myButtonLayout, btnDel, "Delete", 420, 240, 80, 25);
-        btnFind = LocateAButton(myButtonLayout, btnFind, "Find", 420, 150, 80, 25);
-        btnExit = LocateAButton(myButtonLayout, btnExit, "Exit", 420, 310, 80, 25);
-        btnFirst = LocateAButton(myButtonLayout, btnFirst, "|<", 400, 275, 30, 25);
-        btnPrev = LocateAButton(myButtonLayout, btnPrev, "<", 430, 275, 30, 25);
-        btnNext = LocateAButton(myButtonLayout, btnNext, ">", 460, 275, 30, 25);
-        btnLast = LocateAButton(myButtonLayout, btnLast, ">|", 490, 275, 30, 25);
+        btnNew = LocateAButton(myButtonLayout, btnNew, "New", 520, 190, 80, 25);
+        btnSave = LocateAButton(myButtonLayout, btnSave, "Save", 520, 215, 80, 25);
+        btnDel = LocateAButton(myButtonLayout, btnDel, "Delete", 520, 240, 80, 25);
+        btnFind = LocateAButton(myButtonLayout, btnFind, "Find", 520, 150, 80, 25);
+        btnExit = LocateAButton(myButtonLayout, btnExit, "Exit", 520, 310, 80, 25);
+        btnFirst = LocateAButton(myButtonLayout, btnFirst, "|<", 500, 275, 30, 25);
+        btnPrev = LocateAButton(myButtonLayout, btnPrev, "<", 530, 275, 30, 25);
+        btnNext = LocateAButton(myButtonLayout, btnNext, ">", 560, 275, 30, 25);
+        btnLast = LocateAButton(myButtonLayout, btnLast, ">|", 590, 275, 30, 25);
+        btnSortContactName = LocateAButton(myButtonLayout, btnSortContactName, "Sort by Contact Name:", 23, 350, 200, 25);
+        btnBinarySearch = LocateAButton(myButtonLayout, btnBinarySearch, "Binary Search by Contact Name:", 233, 350, 200, 25);
+        btnFilterBy = LocateAButton(myButtonLayout, btnFilterBy, "Filter By:", 443, 350, 100, 25);
     }
 
         public Button LocateAButton(SpringLayout myButtonLayout, Button myButton, String  ButtonCaption, int x, int y, int w, int h)
@@ -263,7 +269,8 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
             int i = 0;
             while (i < numberOfEntries && found == false)
             {
-                if (ContactInfo[i].getName().equals(txtFind.getText()))
+                String searchName = ContactInfo[i].getName().toLowerCase();
+                if (searchName.contains(txtFind.getText()))
                 {
                     found = true;
                 }
