@@ -20,9 +20,9 @@ import javax.swing.SpringLayout;
 public class RelocationManager extends Frame implements WindowListener, ActionListener
 {
     //Screen objects declerations
-    Label lblContactName, lblContactType, lblPhoneNumber, lblWebsiteEmail, lblContactNotes, lblFind, lblTitle;
+    Label lblContactName, lblContactType, lblPhoneNumber, lblWebsiteEmail, lblContactNotes, lblFind, lblTitle, lblContactList;
     TextField txtContactName, txtContactType, txtPhoneNumber, txtWebsiteEmail, txtFind, txtFilter;
-    TextArea txtContactNotes;
+    TextArea txtContactNotes, txtContactList;
     Button btnNew, btnSave, btnDel, btnFind, btnExit, btnFirst, btnPrev, btnNext, btnLast, btnSortContactName, btnBinarySearch, btnFilterBy;
 
     //Global Variables for array management
@@ -68,6 +68,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         lblContactNotes = LocateALabel(myLabelLayout, lblContactNotes, "Contact Notes:", 23, 225);
         lblFind = LocateALabel(myLabelLayout, lblFind, "Find:", 545, 100);
         lblTitle = LocateALabel(myLabelLayout, lblTitle, "Relocation Manager", 23, 25);
+        lblContactList = LocateALabel(myLabelLayout, lblContactList, "Contact List:", 23, 375);
         //LABEL COSMETICS
         //Title label
         lblTitle.setForeground(Color.BLUE);
@@ -106,6 +107,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     public void LocateTextAreas(SpringLayout myTextAreaLayout)
     {
         txtContactNotes = LocateATextArea(myTextAreaLayout, txtContactNotes, 5, 42, 140, 225);
+        txtContactList = LocateATextArea(myTextAreaLayout, txtContactList, 10, 91, 23, 400);
         
     }
 
