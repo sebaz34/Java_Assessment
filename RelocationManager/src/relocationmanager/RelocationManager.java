@@ -19,23 +19,21 @@ import javax.swing.SpringLayout;
 
 public class RelocationManager extends Frame implements WindowListener, ActionListener
 {
+    //Screen objects declerations
     Label lblContactName, lblContactType, lblPhoneNumber, lblWebsiteEmail, lblContactNotes, lblFind, lblTitle;
     TextField txtContactName, txtContactType, txtPhoneNumber, txtWebsiteEmail, txtFind;
     TextArea txtContactNotes;
     Button btnNew, btnSave, btnDel, btnFind, btnExit, btnFirst, btnPrev, btnNext, btnLast;
 
+    //Global Variables for array management
     int maxEntries = 100;     
     int numberOfEntries = 0;  
-    int currentEntry = 0;    
+    int currentEntry = 0; 
+    String fileName = "RelocationManager.txt";
     
-    String[] ContactName = new String[maxEntries];   
-    String[] ContactType = new String[maxEntries];
-    String[] PhoneNumber = new String[maxEntries];
-    String[] WebsiteEmail = new String[maxEntries];
-    String[] ContactNotes = new String[maxEntries];
+    //Array to manage data
+    RelocationContacts[] ContactInfo = new RelocationContacts[maxEntries];
 
-
-    
     public static void main(String[] args)
     {
         Frame myFrame = new RelocationManager();
@@ -169,12 +167,12 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         //SAVE BUTTON
         if(e.getSource() == btnSave)
         {
-            if(ContactName != null && currentEntry == numberOfEntries)
+            if(ContactInfo[currentEntry].getName() != null && currentEntry == numberOfEntries)
             {
                 numberOfEntries++;
                 saveEntry(currentEntry);
             }
-            else if (ContactName != null)
+            else if (ContactInfo[currentEntry].getName() != null)
             {
                 saveEntry(currentEntry);
             }
@@ -265,7 +263,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
             int i = 0;
             while (i < numberOfEntries && found == false)
             {
-                if (ContactName[i].equals(txtFind.getText()))
+                if (ContactInfo[i].getName().equals(txtFind.getText()))
                 {
                     found = true;
                 }
@@ -280,21 +278,21 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     
     public void displayEntry(int index)
     {
-        txtContactName.setText(ContactName[index]);
-        txtContactType.setText(ContactType[index]);
-        txtPhoneNumber.setText(PhoneNumber[index]);
-        txtWebsiteEmail.setText(WebsiteEmail[index]);
-        txtContactNotes.setText(ContactNotes[index]);
+        txtContactName.setText(ContactInfo[index].getName());
+        txtContactType.setText(ContactInfo[index].getType());
+        txtPhoneNumber.setText(ContactInfo[index].getPhone());
+        txtWebsiteEmail.setText(ContactInfo[index].getWebEmail());
+        txtContactNotes.setText(ContactInfo[index].getNotes());
         currentEntry = index;
     }
     
     public void saveEntry(int index)
     {
-        ContactName[index] = txtContactName.getText();
-        ContactType[index] = txtContactType.getText();
-        PhoneNumber[index] = txtPhoneNumber.getText();
-        WebsiteEmail[index] = txtWebsiteEmail.getText();
-        ContactNotes[index] = txtContactNotes.getText();
+        ContactInfo[index].setName(txtContactName.getText());
+        ContactInfo[index].setType(txtContactType.getText());
+        ContactInfo[index].setPhone(txtPhoneNumber.getText()); 
+        ContactInfo[index].setWebEmail(txtWebsiteEmail.getText());
+        ContactInfo[index].setNotes(txtContactNotes.getText());
 		
         writeFile();
     }
@@ -303,7 +301,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     {
         try
         {
-            FileInputStream fstream = new FileInputStream("RelocationManager.txt");
+            FileInputStream fstream = new FileInputStream(fileName);
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             
@@ -313,11 +311,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
             while ((line = br.readLine()) != null)
             {
                 String[] temp = line.split(";");
-                ContactName[i] = temp[0];
-                ContactType[i] = temp[1];
-                PhoneNumber[i] = temp[2];
-                WebsiteEmail[i] = temp[3];
-                ContactNotes[i] = temp[4];
+                ContactInfo[i] = new RelocationContacts(temp[0], temp[1], temp[2], temp[3], temp[4]);
                 
                 i++;
             }
@@ -341,7 +335,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         {
             PrintWriter out = new PrintWriter(new FileWriter("RelocationManager.txt"));
             for(int m = 0; m < numberOfEntries; m++){
-                out.println(ContactName[m] +";" + ContactType[m] + ";" + PhoneNumber[m] + ";" + WebsiteEmail[m] + ";" + ContactNotes[m] +";");
+                out.println(ContactInfo[m].getName() +";" + ContactInfo[m].getType() + ";" + ContactInfo[m].getPhone() + ";" + ContactInfo[m].getWebEmail() + ";" + ContactInfo[m].getNotes() +";");
             }
              out.close();
         }
@@ -349,5 +343,85 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         {
             System.err.println("Error Writing File: " + e.getMessage());
         }
+    }
+}
+
+class RelocationContacts
+{
+    private String Name = new String();
+    private String Type = new String();
+    private String Phone = new String();
+    private String WebEmail = new String();
+    private String Notes = new String();
+    
+    //Default Constructor - Assings default value
+    public RelocationContacts()
+    {
+        Name = "Default";
+        Type = "Default";
+        Phone = "Default";
+        WebEmail = "Default";
+        Notes = "Default";
+    }
+    
+    //Prefered Constructor with inputs given
+    public RelocationContacts(String inputName, String inputType, String inputPhone, String inputWebEmail, String inputNotes)
+    {
+        Name = inputName;
+        Type = inputType;
+        Phone = inputPhone;
+        WebEmail = inputWebEmail;
+        Notes = inputNotes;
+    }
+    
+    //Set method to change object values
+    public void setRelocationContact (String inputName, String inputType, String inputPhone, String inputWebEmail, String inputNotes)
+    {
+        Name = inputName;
+        Type = inputType;
+        Phone = inputPhone;
+        WebEmail = inputWebEmail;
+        Notes = inputNotes;
+    }
+
+    //Setters and Getters
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
+    }
+
+    public String getType() {
+        return Type;
+    }
+
+    public void setType(String Type) {
+        this.Type = Type;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String Phone) {
+        this.Phone = Phone;
+    }
+
+    public String getWebEmail() {
+        return WebEmail;
+    }
+
+    public void setWebEmail(String WebEmail) {
+        this.WebEmail = WebEmail;
+    }
+
+    public String getNotes() {
+        return Notes;
+    }
+
+    public void setNotes(String Notes) {
+        this.Notes = Notes;
     }
 }
