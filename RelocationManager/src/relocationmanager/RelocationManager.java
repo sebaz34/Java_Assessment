@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import javax.swing.SpringLayout;
 
 /**
@@ -33,6 +34,9 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     
     //Array to manage data
     RelocationContacts[] ContactInfo = new RelocationContacts[maxEntries];
+    
+    //Array used for sorting and searching
+    String[] sortArray = new String[maxEntries];
 
     public static void main(String[] args)
     {
@@ -72,6 +76,8 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         //LABEL COSMETICS
         //Title label
         lblTitle.setForeground(Color.BLUE);
+        Font titleFont = new Font("Serif Bold Italic", Font.ITALIC, 40);
+        lblTitle.setFont(titleFont);
         
     }
 
@@ -164,26 +170,18 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         //NEW BUTTON
         if(e.getSource() == btnNew)
         {
-            if( numberOfEntries < maxEntries -1)
-            {
-                currentEntry = numberOfEntries;
+            if(numberOfEntries < maxEntries -1)
+            {   
+                numberOfEntries ++;
+                currentEntry = numberOfEntries -1;
                 resetTxtFields();
-                displayEntry(currentEntry);
             }
         }
         
         //SAVE BUTTON
         if(e.getSource() == btnSave)
         {
-            if(ContactInfo[currentEntry].getName() != null && currentEntry == numberOfEntries)
-            {
-                numberOfEntries++;
-                saveEntry(currentEntry);
-            }
-            else if (ContactInfo[currentEntry].getName() != null)
-            {
-                saveEntry(currentEntry);
-            }
+            saveEntry(currentEntry);
         }
         
         //DELETE BUTTON
@@ -221,6 +219,44 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         if(e.getSource() == btnLast)
         {
             displayEntry(numberOfEntries - 1);
+        }
+        
+        //SORT AND DISPLAY BUTTON
+        if(e.getSource() == btnSortContactName || e.getSource() == btnBinarySearch)
+        {
+            for(int i = 0; i < numberOfEntries; i++)
+            {
+                sortArray[i] = ContactInfo[i].getName();
+            }
+            Arrays.sort(sortArray, 0, numberOfEntries);
+            txtContactList.setText("Sorted Contact Names:\n");
+            txtContactList.append("--------------------\n");
+            for (int i = 0; i < numberOfEntries; i++) 
+            {
+                txtContactList.append(sortArray[i] + "\n");
+            }
+        }
+        
+        //BINARY SEARCH BUTTON
+        if(e.getSource() == btnBinarySearch)
+        {
+            int result = Arrays.binarySearch(sortArray, 0, numberOfEntries, txtFilter.getText());
+            txtContactList.append("\nBinary Search Result: "+result);
+        }
+        
+        //FILTER BY BUTTON
+        if(e.getSource() == btnFilterBy)
+        {
+            
+            txtContactList.setText("Filtered Contact Types:\n");
+            txtContactList.append("--------------\n");
+            for (int i = 0; i < numberOfEntries; i++)
+            {
+                if(ContactInfo[i].getNotes().toLowerCase().contains(txtFilter.getText().toLowerCase()))
+                {
+                    txtContactList.append(ContactInfo[i].getName() +"\n");
+                }
+            }
         }
     }
 
@@ -272,7 +308,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
             while (i < numberOfEntries && found == false)
             {
                 String searchName = ContactInfo[i].getName().toLowerCase();
-                if (searchName.contains(txtFind.getText()))
+                if (searchName.contains(txtFind.getText().toLowerCase()))
                 {
                     found = true;
                 }
@@ -297,6 +333,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
     
     public void saveEntry(int index)
     {
+        ContactInfo[index] = new RelocationContacts();
         ContactInfo[index].setName(txtContactName.getText());
         ContactInfo[index].setType(txtContactType.getText());
         ContactInfo[index].setPhone(txtPhoneNumber.getText()); 
@@ -304,6 +341,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         ContactInfo[index].setNotes(txtContactNotes.getText());
 		
         writeFile();
+        readFile();
     }
 
     public void readFile()
