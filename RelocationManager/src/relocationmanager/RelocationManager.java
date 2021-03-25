@@ -164,6 +164,7 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         //EXIT BUTTON
         if(e.getSource() == btnExit)
         {
+            writeFile();
             System.exit(0);
         }
         
@@ -188,7 +189,8 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         if(e.getSource() == btnDel)
         {
             resetTxtFields();
-            saveEntry(currentEntry);
+            ContactInfo = deleteEntry(currentEntry);
+            numberOfEntries --;
         }
         
         //FIRST BUTTON
@@ -343,7 +345,20 @@ public class RelocationManager extends Frame implements WindowListener, ActionLi
         writeFile();
         readFile();
     }
+    
+    public RelocationContacts[] deleteEntry(int index)
+    {
+        if (ContactInfo == null || index < 0 || index >= ContactInfo.length) 
+        {
+            return ContactInfo;
+        }
+        RelocationContacts[] temp = new RelocationContacts[ContactInfo.length - 1];
+        System.arraycopy(ContactInfo, 0, temp, 0, index);
+        System.arraycopy(ContactInfo, index + 1, ContactInfo, index, ContactInfo.length - index - 1);
 
+        return temp;
+    }
+    
     public void readFile()
     {
         try
