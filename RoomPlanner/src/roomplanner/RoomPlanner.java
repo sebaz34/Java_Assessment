@@ -4,6 +4,7 @@ package roomplanner;
 
 import javax.swing.*;
 
+//import listeners and events
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,11 +12,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+//import readers and writers
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashSet;
+//import classes
+import roomplanner.CellData;
+import roomplanner.Heading;
 
 
 public class RoomPlanner extends JFrame implements ActionListener, KeyListener
@@ -23,16 +28,18 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener
 
     private int totalX = 11;
     private int totalY = 19;
+    
+    //counters to track length of array in the seperate arrays
+    int CellDataCounter = 0;
+    int HeadingCounter = 0;
 
     private JTextField[][] fields = new JTextField[totalX][totalY];
     private JButton btnClear, btnSave, btnSort, btnFind, btnRAF, btnExit;
-    private String dataFileName = "EmissionsTracker.csv";
-    private String tableFileName = "EmissionsTable.csv";
-
-    private String[] headingsAtTheTop = {"Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Weekly Average"};
-    private String[] headingsOnTheSide = {"Emissions", "9:00am", "10:00am", "11:00am", "12:00pm", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "Total", "Average"};
-
+    private String dataFileName = "ClientRoom1_Data_20220307.csv";
+    private String tableFileName = "ClientRoom1_Data_20220307.csv";
     
+    public Heading headings[] = new Heading[4];
+    public CellData cellData[] = new CellData[209];
     
     public static void main(String[] args)
     {
@@ -54,8 +61,8 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener
             }
         });
         
-        displayGUI();
         readDataFile(dataFileName);
+        displayGUI();
         calculateTotals();
 
         setResizable(true);
@@ -71,7 +78,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener
         
         displayTextFields(springLayout);
         displayButtons(springLayout);
-        setupTable(springLayout);
+        setupTable();
     }
 
     private void displayTextFields(SpringLayout layout)
@@ -97,8 +104,26 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener
         btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 470, 550, 80, 25);
     }
     
-    private void setupTable(SpringLayout layout)
+    private void setupTable()
     {
+        //Setting up room map cells
+        for (int i = 0; i < CellDataCounter; i++) 
+        {
+            String validEntryCheck = cellData[i].getCellContents();
+            if(validEntryCheck.equals("") || validEntryCheck.isEmpty())
+            {
+                break;
+            }
+            else
+            {
+                int tempX = cellData[i].getX();
+                int tempY = cellData[i].getY();
+                String tempString = cellData[i].getCellContents();
+                
+                fields[tempX][tempY].setText(tempString);
+            }
+            
+        }
       
     } 
 
@@ -188,14 +213,44 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener
     {
         try
         {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
+
             
-            for (int x = 1; x < totalX - 1; x++)
-            {
-                for (int y = 1; y < totalY - 2; y++)
+            //Read in file and loop for each line in file 
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String line;
+            //line by line sort and store into relevent array (Heading or CellData
+            while ((line = br.readLine()) != null)
+            {    
+                String temp[] = line.split(",");
+                //Checking to see if first value in temp array is an integer
+                try
                 {
-                    String temp[] = br.readLine().split(",");                    
-                    fields[x][y].setText(temp[2]);
+                    Integer.parseInt(temp[0]);
+                    
+                    //Instantiate new celldata class and assign values from temp into new class
+                    CellData newCellData = new CellData();
+                    
+                    newCellData.setY(Integer.parseInt(temp[1]));
+                    newCellData.setX(Integer.parseInt(temp[0]));
+                    newCellData.setCellContents(temp[2]);
+                    newCellData.setCellColour(temp[3]);
+                    newCellData.setFixed(Boolean.parseBoolean(temp[4]));
+                    
+                    //Assigne newcelldata into array and increase index value of array
+                    cellData[CellDataCounter] = newCellData;
+                    CellDataCounter ++;
+                }
+                catch(Exception e)
+                {
+                    //Instantiate new heading class and assign values form temp into new class
+                    Heading newHeadingData = new Heading();
+                    
+                    newHeadingData.setHeader(temp[0]);
+                    newHeadingData.setData(temp[1]);
+                    
+                    //Assigns newHeadingData into array and increase index value of array
+                    headings[HeadingCounter] = newHeadingData;
+                    HeadingCounter ++; 
                 }
             }
             br.close();
@@ -253,5 +308,4 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener
     }
 
     //</editor-fold>    
-
 }
