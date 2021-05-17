@@ -24,6 +24,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.Dimension;
+import java.awt.event.MouseListener;
 
 
 
@@ -56,11 +57,11 @@ public class LibraryComponents
     * returns The JTextField.
     * ----------------------------------------------------------
     */
-    public static JTextField LocateAJTextField(JFrame myJFrame, KeyListener myKeyLstnr, SpringLayout myJTextFieldLayout, int width, int x, int y)
+    public static JTextField LocateAJTextField(JFrame myJFrame, MouseListener myMouseListen, SpringLayout myJTextFieldLayout, int width, int x, int y)
     {
         JTextField myJTextField = new JTextField(width);
         myJFrame.add(myJTextField);  
-        myJTextField.addKeyListener(myKeyLstnr);
+        myJTextField.addMouseListener(myMouseListen);
         myJTextFieldLayout.putConstraint(SpringLayout.WEST, myJTextField, x, SpringLayout.WEST, myJFrame);
         myJTextFieldLayout.putConstraint(SpringLayout.NORTH, myJTextField, y, SpringLayout.NORTH, myJFrame);
         return myJTextField;
