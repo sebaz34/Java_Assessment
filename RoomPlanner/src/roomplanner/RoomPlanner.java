@@ -19,16 +19,18 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import javax.swing.border.LineBorder;
 //import classes
 import roomplanner.CellData;
 import roomplanner.Heading;
+import roomplanner.ColorUtils;
 
 
 public class RoomPlanner extends JFrame implements ActionListener, KeyListener, MouseListener
 {
-
+//<editor-fold defaultstate="collapsed" desc="Global Variables">
     private int totalX = 11;
     private int totalY = 19;
     
@@ -47,10 +49,11 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
     private JButton btnClear, btnSave, btnSort, btnFind, btnRAF, btnExit;
     private JButton btnGreen, btnRed, btnPurple, btnYellow, btnBlue, btnWhite;
     private String dataFileName = "ClientRoom1_Data_20220307.csv";
-    private String tableFileName = "ClientRoom1_Data_20220307.csv";
     
     public Heading headings[] = new Heading[4];
     public CellData cellData[] = new CellData[209];
+//</editor-fold>
+
     
     public static void main(String[] args)
     {
@@ -74,7 +77,6 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         
         readDataFile(dataFileName);
         displayGUI();
-        calculateTotals();
 
         setResizable(true);
         setVisible(true);
@@ -104,6 +106,8 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
                 fields[x][y] = LibraryComponents.LocateAJTextField(this, this, layout, 9, xPos, yPos);
             }
         }
+        
+        //<editor-fold defaultstate="collapsed" desc="Heading Setup">
         //Create heading text fields
         txtHeading1 = LibraryComponents.LocateAJTextField(this, this, layout, 9, 10, 10);
         txtData1 = LibraryComponents.LocateAJTextField(this, this, layout, 9, 120, 10);
@@ -131,6 +135,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         txtData3.setBackground(Color.LIGHT_GRAY);
         txtHeading4.setBackground(Color.LIGHT_GRAY);
         txtData4.setBackground(Color.LIGHT_GRAY);
+        //</editor-fold>
     }
     
     private void displayButtons(SpringLayout layout)
@@ -156,6 +161,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         btnYellow.setBackground(Color.YELLOW);
         btnBlue.setBackground(Color.CYAN);
         btnWhite.setBackground(Color.WHITE);
+
     }
     
     private void setupTable()
@@ -215,7 +221,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
     //</editor-fold>
 
                 
-    //<editor-fold defaultstate="collapsed" desc="Action and Key Listeners">    
+    //<editor-fold defaultstate="collapsed" desc="Action, Key, and Mouse Listeners">    
     
     @Override
     public void actionPerformed(ActionEvent e)
@@ -226,11 +232,11 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         }
         if (e.getSource() == btnSave)
         {
-            saveEmmisionsTableToFile(tableFileName);
-        }
-        if (e.getSource() == btnSave)
-        {
-            writeDataFile(dataFileName);
+            ArrayList<CellData> savedCellData = new ArrayList<CellData>();
+            ArrayList<Heading> savedHeadings = new ArrayList<Heading>();
+            savedHeadings = saveHeadingsToMemory();
+            savedCellData = saveCellDataToMemory();     
+            writeDataFile(dataFileName, savedHeadings, savedCellData);
         }
         if (e.getSource() == btnExit)
         {
@@ -291,10 +297,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
     @Override
     public void keyPressed(KeyEvent e)  {  }
     @Override
-    public void keyReleased(KeyEvent e)
-    {
-        calculateTotals();
-    }
+    public void keyReleased(KeyEvent e) {   }
     
     public void mouseClicked(MouseEvent e) {
         JTextField clickedField = (JTextField) e.getComponent();
@@ -322,20 +325,15 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
     
     private void ClearData()
     {
-        for (int y = 1; y < totalY; y++)
+        for (int y = 0; y < totalY; y++)
         {
-            for (int x = 1; x < totalX; x++)
+            for (int x = 0; x < totalX; x++)
             {
-                fields[x][y].setText("0");
+                fields[x][y].setText("");
+                fields[x][y].setBackground(Color.WHITE);
             }
         }
     }
-
-    private void calculateTotals()
-    {
-          
-    }
-
        
     public String checkInteger(String strValue)
     {
@@ -405,27 +403,98 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         }
     }
 
-    public void writeDataFile(String fileName)
+    public void writeDataFile(String fileName, ArrayList<Heading> headings, ArrayList<CellData> cellData)
     {
         try
         {
-            //BufferedWriter outFile = new BufferedWriter(new FileWriter(fileName));
-            BufferedWriter outFile = new BufferedWriter(new FileWriter("EmissionsTracker_NEW.csv"));
-            for (int x = 1; x < totalX - 1; x++)
+            BufferedWriter outFile = new BufferedWriter(new FileWriter(fileName));
+            
+            for (Heading heading: headings) 
             {
-                for (int y = 1; y < totalY - 2; y++)
-                {
-                    outFile.write(fields[0][y].getText() + "," + fields[x][0].getText() + "," + fields[x][y].getText());
-                    outFile.newLine();
-                }
+                outFile.write(heading.header + "," + heading.data);
+                outFile.newLine();
+            }
+            
+            for (CellData celldata: cellData) 
+            {
+                String x = String.valueOf(celldata.x);
+                String y = String.valueOf(celldata.y);
+                outFile.write(x + "," + y + "," + celldata.cellContents + "," + celldata.cellColour);
+                outFile.newLine();   
             }
             outFile.close();
-            System.out.println("Emmissions Tracker data has been saved.");
         }
         catch (Exception e)
         {
             System.err.println("Error: " + e.getMessage());
+            System.err.println("The above error occured in writeDataFile()");
         }
+    }
+    
+    public ArrayList<Heading> saveHeadingsToMemory()
+    {
+        ArrayList<Heading> newHeadings = new ArrayList<Heading>();
+        for (int headingCounter = 0; headingCounter < 4; headingCounter++) 
+            {
+                Heading currentHeading = new Heading();
+                switch (headingCounter)
+                {
+                    case 0:
+                        currentHeading.header = txtHeading1.getText();
+                        currentHeading.data = txtData1.getText();
+                        break;
+                    case 1:
+                        currentHeading.header = txtHeading2.getText();
+                        currentHeading.data = txtData2.getText();
+                        break;
+                    case 2:
+                        currentHeading.header = txtHeading3.getText();
+                        currentHeading.data = txtData3.getText();
+                        break;
+                    case 3:
+                        currentHeading.header = txtHeading4.getText();
+                        currentHeading.data = txtData4.getText();
+                        break;
+                }
+                newHeadings.add(currentHeading);
+            }
+        return newHeadings;
+    }
+    
+    public ArrayList<CellData> saveCellDataToMemory()
+    {
+        //Declare and instantiate new arrays to hold new incoming data
+        ArrayList<CellData> newCellData = new ArrayList<CellData>();
+
+        //CellData
+        for (int y = 0; y < totalY; y++) 
+        {
+            for (int x = 0; x < totalX; x++) 
+            {
+                //Instantiate and assing values to temp CellData object
+                CellData currentCell = new CellData();
+                //Assign currentcell coordinates
+                currentCell.x = x;
+                currentCell.y = y;
+                //Pull cell colour from fields array
+                Color tempColour = fields[x][y].getBackground();
+                int tempR = tempColour.getRed();
+                int tempG = tempColour.getGreen();
+                int tempB = tempColour.getBlue();
+                ColorUtils colorUtils = new ColorUtils();
+                String tempColourString = colorUtils.getColorNameFromRgb(tempR, tempG, tempB);
+                if(!tempColourString.equals("White") && !fields[x][y].getText().equals(""))
+                {
+                    //Assign cell colour to current cell
+                    currentCell.cellColour = tempColourString;
+                    //Assign cell contents to current cell
+                    currentCell.cellContents = fields[x][y].getText();
+                    //Assign object to array
+                    newCellData.add(currentCell);
+                }
+            }
+        }
+        return newCellData;
     }
 
     public void saveEmmisionsTableToFile(String fileName)
