@@ -1,6 +1,11 @@
 
 package roomplanner;
 
+/*
+To Do:
+ - Fix write program file ( Saving the data has been fixed now, i think the ordering of x and y are causing the problem...)
+ - Look at creating a copy function (copy colour and contents of selected cell and paste to all future clicked cells)
+*/
 
 import javax.swing.*;
 
