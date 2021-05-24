@@ -373,30 +373,37 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         testing.name = "testing";
         allFurniture.add(testing);
         
-        for (int i = 0; i < CellDataCounter; i++)
+        
+        for(Furniture currentFurniture: allFurniture)
         {
-            CellData currentCell = cellData[i];
-            Boolean found = false;
-                //check if item already exists in allFurniture
-                for (Furniture currentFurniture: allFurniture) 
+            int attempts = 0;
+            for(CellData currentCell: cellData)
+            {
+                if (currentFurniture.name.equals(currentCell.cellContents))
                 {
-                    if (currentCell.cellContents.equalsIgnoreCase(currentFurniture.name)) 
-                    {
-                        currentFurniture.count += 1;
-                        found = true;
-                        break;
-                    }
-                    if (found = false)
-                    {
-                        Furniture newFurniture = new Furniture();
-                        newFurniture.name = currentCell.cellContents;
-                        newFurniture.count = 1;
-                        allFurniture.add(newFurniture);
-                    }
+                    currentFurniture.count += 1;
+                    break;
+                }
+                else
+                {
+                    attempts += 1;
                 }
                 
+                if (attempts == (CellDataCounter + 1)) 
+                {
+                    Furniture newFurniture = new Furniture();
+                    newFurniture.name = currentCell.cellContents;
+                    newFurniture.count = 1;
+                    break;
+                }
         }
     }
+
+                
+                
+                
+    }
+    
     
             
     //</editor-fold>    
