@@ -5,6 +5,9 @@ package roomplanner;
 To Do:
  - Fix write program file ( Saving the data has been fixed now, i think the ordering of x and y are causing the problem...)
  - Look at creating a copy function (copy colour and contents of selected cell and paste to all future clicked cells)
+
+24/05/21
+ - FIX THE SHIT YOU BROKE IN SORT BTN
 */
 
 import javax.swing.*;
@@ -24,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashSet;
 import javax.swing.border.LineBorder;
@@ -31,10 +35,12 @@ import javax.swing.border.LineBorder;
 import roomplanner.CellData;
 import roomplanner.Heading;
 import roomplanner.ColorUtils;
+import roomplanner.Furniture;
 
 
 public class RoomPlanner extends JFrame implements ActionListener, KeyListener, MouseListener
 {
+    
 //<editor-fold defaultstate="collapsed" desc="Global Variables">
     private int totalX = 11;
     private int totalY = 19;
@@ -57,6 +63,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
     
     public Heading headings[] = new Heading[4];
     public CellData cellData[] = new CellData[209];
+    ArrayList<Furniture> allFurniture = new ArrayList<Furniture>();
 //</editor-fold>
 
     
@@ -193,26 +200,12 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
                 fields[tempX][tempY].setText(tempContents);
                 
                 //Set cell background colour based on cell colour variable
-                Color color = null;
-                switch(tempColour)
-                {
-                    case "Green":
-                        color = Color.GREEN;
-                        break;
-                    case "Red":
-                        color = Color.RED;
-                        break;
-                    case "Purple":
-                        color = Color.MAGENTA;
-                        break;
-                    case "Yellow":
-                        color = Color.YELLOW;
-                        break;
-                    case "Blue":
-                        color = Color.CYAN;
-                        break;
-                }
-                fields[tempX][tempY].setBackground(color);
+                ColorUtils colorUtilities = new ColorUtils();
+                int r = colorUtilities.getRFromColorName(tempColour);
+                int g = colorUtilities.getGFromColorName(tempColour);
+                int b = colorUtilities.getBFromColorName(tempColour);
+                
+                fields[tempX][tempY].setBackground(new Color(r,g,b));
             }
         }
     } 
@@ -241,11 +234,32 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
             ArrayList<Heading> savedHeadings = new ArrayList<Heading>();
             savedHeadings = saveHeadingsToMemory();
             savedCellData = saveCellDataToMemory();     
-            writeDataFile(dataFileName, savedHeadings, savedCellData);
+            writeCSVDataFile(dataFileName, savedHeadings, savedCellData);
         }
         if (e.getSource() == btnExit)
         {
             System.exit(0);
+        }
+        if (e.getSource() == btnRAF)
+        {
+            writeRAFDataFile("RAF File");
+        }
+        if (e.getSource() == btnSort) {
+            JFrame sortFrame = new JFrame();
+            sortFrame.setBounds(10,10,400,400);
+            SpringLayout popUpSpringLayout = new SpringLayout();
+            sortFrame.setLayout(popUpSpringLayout);
+            sortFrame.setVisible(true);
+            
+            JTextArea txtSort = new JTextArea();
+            txtSort = LibraryComponents.LocateAJTextArea(sortFrame, popUpSpringLayout, 10, 10, 20, 20);
+            
+            sortAndDisplayFurniture();
+            
+            for(Furniture currentFurniture: allFurniture){
+                txtSort.append(currentFurniture.name + "     " + Integer.toString(currentFurniture.count) + "\n");
+            }
+            
         }
         if (e.getSource() == btnGreen)
         {
@@ -352,6 +366,38 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
             return "0";
         }
     }
+    
+    public void sortAndDisplayFurniture(){
+        Furniture testing = new Furniture();
+        testing.count = 1;
+        testing.name = "testing";
+        allFurniture.add(testing);
+        
+        for (int i = 0; i < CellDataCounter; i++)
+        {
+            CellData currentCell = cellData[i];
+            Boolean found = false;
+                //check if item already exists in allFurniture
+                for (Furniture currentFurniture: allFurniture) 
+                {
+                    if (currentCell.cellContents.equalsIgnoreCase(currentFurniture.name)) 
+                    {
+                        currentFurniture.count += 1;
+                        found = true;
+                        break;
+                    }
+                    if (found = false)
+                    {
+                        Furniture newFurniture = new Furniture();
+                        newFurniture.name = currentCell.cellContents;
+                        newFurniture.count = 1;
+                        allFurniture.add(newFurniture);
+                    }
+                }
+                
+        }
+    }
+    
             
     //</editor-fold>    
 
@@ -381,7 +427,6 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
                     newCellData.setX(Integer.parseInt(temp[0]));
                     newCellData.setCellContents(temp[2]);
                     newCellData.setCellColour(temp[3]);
-                    newCellData.setFixed(Boolean.parseBoolean(temp[4]));
                     
                     //Assigne newcelldata into array and increase index value of array
                     cellData[CellDataCounter] = newCellData;
@@ -408,7 +453,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         }
     }
 
-    public void writeDataFile(String fileName, ArrayList<Heading> headings, ArrayList<CellData> cellData)
+    public void writeCSVDataFile(String fileName, ArrayList<Heading> headings, ArrayList<CellData> cellData)
     {
         try
         {
@@ -433,6 +478,30 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         {
             System.err.println("Error: " + e.getMessage());
             System.err.println("The above error occured in writeDataFile()");
+        }
+    }
+    
+    public void writeRAFDataFile(String fileName)
+    {
+        try
+        {
+            String str;
+            RandomAccessFile rafFile = new RandomAccessFile(fileName, "rw");
+            for (int y = 1; y < totalY; y++)
+            {
+                str = "";
+                for (int x = 0; x < totalX; x++)
+                {
+                    str = str + fields[x][y].getText() + fields[x][y].getBackground();
+                }
+                rafFile.writeUTF(str);
+            }
+            rafFile.close();
+            System.out.println("Room Planner System RAF data has been saved.");
+        }
+        catch (Exception e)
+        {
+            System.err.println("Error caught during writeRAFDataFile method. Error is: " + e);
         }
     }
     
@@ -500,29 +569,6 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
             }
         }
         return newCellData;
-    }
-
-    public void saveEmmisionsTableToFile(String fileName)
-    {
-        try
-        {
-            BufferedWriter outFile = new BufferedWriter(new FileWriter(fileName));
-            for (int y = 0; y < totalY; y++)
-            {
-                for (int x = 0; x < totalX-1; x++)
-                {
-                    outFile.write(fields[x][y].getText() + "," );               
-                }
-                outFile.write(fields[6][y].getText() + "" );
-                outFile.newLine();
-            }
-            outFile.close();
-            System.out.println("Emmissions Tracker table has been saved.");
-        }
-        catch (Exception e)
-        {
-            System.err.println("Error: " + e.getMessage());
-        }
     }
 
     //</editor-fold>    

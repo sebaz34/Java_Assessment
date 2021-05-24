@@ -182,6 +182,36 @@ public  String getColorNameFromRgb(int r, int g, int b) {
     }
 }
 
+public int getRFromColorName(String colorName){
+    ArrayList<ColorName> colorList = initColorList();
+    for(ColorName c: colorList){
+        if (c.name.equalsIgnoreCase(colorName)) {
+            return c.getR();
+        }
+    }
+    return 0;
+}
+
+public int getGFromColorName(String colorName){
+    ArrayList<ColorName> colorList = initColorList();
+    for(ColorName c: colorList){
+        if (c.name.equalsIgnoreCase(colorName)) {
+            return c.getG();
+        }
+    }
+    return 0;
+}
+
+public int getBFromColorName(String colorName){
+    ArrayList<ColorName> colorList = initColorList();
+    for(ColorName c: colorList){
+        if (c.name.equalsIgnoreCase(colorName)) {
+            return c.getB();
+        }
+    }
+    return 0;
+}
+
 public class ColorName {
     public int r, g, b;
     public String name;
