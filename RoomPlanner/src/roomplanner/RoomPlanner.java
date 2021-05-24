@@ -7,7 +7,7 @@ To Do:
  - Look at creating a copy function (copy colour and contents of selected cell and paste to all future clicked cells)
 
 24/05/21
- - FIX THE SHIT YOU BROKE IN SORT BTN
+ - Create row and column number headings
 */
 
 import javax.swing.*;
@@ -29,13 +29,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import javax.swing.border.LineBorder;
 //import classes
 import roomplanner.CellData;
 import roomplanner.Heading;
 import roomplanner.ColorUtils;
-import roomplanner.Furniture;
 
 
 public class RoomPlanner extends JFrame implements ActionListener, KeyListener, MouseListener
@@ -56,14 +56,16 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
     boolean mouseHeld = false;
 
     private JTextField[][] fields = new JTextField[totalX][totalY];
-    private JTextField txtHeading1, txtData1, txtHeading2, txtData2, txtHeading3, txtData3, txtHeading4, txtData4;
+    private JTextField txtHeading1, txtData1, txtHeading2, txtData2, txtHeading3, txtData3, txtHeading4, txtData4, txtFind;
     private JButton btnClear, btnSave, btnSort, btnFind, btnRAF, btnExit;
     private JButton btnGreen, btnRed, btnPurple, btnYellow, btnBlue, btnWhite;
+    private JLabel[] horizontalLabels = new JLabel[11];
+    private JLabel[] verticalLabels = new JLabel[19];
     private String dataFileName = "ClientRoom1_Data_20220307.csv";
     
     public Heading headings[] = new Heading[4];
     public CellData cellData[] = new CellData[209];
-    ArrayList<Furniture> allFurniture = new ArrayList<Furniture>();
+   
 //</editor-fold>
 
     
@@ -101,9 +103,35 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
         
+        displayLabels(springLayout);
         displayTextFields(springLayout);
         displayButtons(springLayout);
         setupTable();
+    }
+    
+    private void displayLabels(SpringLayout layout)
+    {
+        int x = 40;
+        int y = 70;
+        int counter = 0;
+        //Display horizontal Labels
+        for (JLabel label: horizontalLabels)
+        {
+            LibraryComponents.LocateAJLabel(this, layout, Integer.toString(counter) , x + 50, y);
+            counter += 1;
+            x += 110;
+        }
+        
+        x = 15;
+        y = 50;
+        counter = 0;
+        //Display vertical labels
+        for (JLabel label: verticalLabels)
+        {
+            LibraryComponents.LocateAJLabel(this, layout, Integer.toString(counter), x, y + 50);
+            counter += 1;
+            y += 20;
+        }
     }
 
     private void displayTextFields(SpringLayout layout)
@@ -113,13 +141,14 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         {
             for (int x = 0; x < totalX; x++)     
             {
-                int xPos = x * 110 + 5;
+                int xPos = x * 110 + 40;
                 int yPos = y * 20 + 100;           
                 fields[x][y] = LibraryComponents.LocateAJTextField(this, this, layout, 9, xPos, yPos);
+                fields[x][y].setBorder(new LineBorder(Color.BLACK, 1));
             }
         }
         
-        //<editor-fold defaultstate="collapsed" desc="Heading Setup">
+        //<editor-fold defaultstate="collapsed" desc="Heading and Search Setup">
         //Create heading text fields
         txtHeading1 = LibraryComponents.LocateAJTextField(this, this, layout, 9, 10, 10);
         txtData1 = LibraryComponents.LocateAJTextField(this, this, layout, 9, 120, 10);
@@ -147,6 +176,8 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         txtData3.setBackground(Color.LIGHT_GRAY);
         txtHeading4.setBackground(Color.LIGHT_GRAY);
         txtData4.setBackground(Color.LIGHT_GRAY);
+        //txtFind Set Up
+        txtFind = LibraryComponents.LocateAJTextField(this, null, layout, 15, 310, 554);
         //</editor-fold>
     }
     
@@ -156,9 +187,9 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         btnClear = LibraryComponents.LocateAJButton(this, this, layout, "Clear", 20, 550, 80, 25);
         btnSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 110, 550, 80, 25);
         btnSort = LibraryComponents.LocateAJButton(this, this, layout, "Sort", 200, 550, 80, 25);
-        btnFind = LibraryComponents.LocateAJButton(this, this, layout, "Find", 290, 550, 80, 25);
-        btnRAF = LibraryComponents.LocateAJButton(this, this, layout, "RAF", 380, 550, 80, 25);
-        btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 470, 550, 80, 25);
+        btnFind = LibraryComponents.LocateAJButton(this, this, layout, "Find", 490, 550, 80, 25);
+        btnRAF = LibraryComponents.LocateAJButton(this, this, layout, "RAF", 580, 550, 80, 25);
+        btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 670, 550, 80, 25);
         
         //Color Buttons (Right Side of screen)
         btnGreen = LibraryComponents.LocateAJButton(this, this, layout, "", 1400, 100, 80, 25);
@@ -224,6 +255,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        //Function Buttons
         if (e.getSource() == btnClear)
         {
             ClearData();
@@ -240,6 +272,12 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         {
             System.exit(0);
         }
+        if(e.getSource() == btnFind)
+        {
+            String searchText = txtFind.getText();
+            SearchData(searchText);
+            
+        }
         if (e.getSource() == btnRAF)
         {
             writeRAFDataFile("RAF File");
@@ -253,14 +291,46 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
             
             JTextArea txtSort = new JTextArea();
             txtSort = LibraryComponents.LocateAJTextArea(sortFrame, popUpSpringLayout, 10, 10, 20, 20);
+            txtSort.setText("Items \t #Unit Spaces\n\n");
+            String currentItem = "";
+            int currentCount = 0;
+            int numberOfEntries = 0;
             
-            sortAndDisplayFurniture();
+            String[] sortArray = new String[totalX * totalY + 2];
             
-            for(Furniture currentFurniture: allFurniture){
-                txtSort.append(currentFurniture.name + "     " + Integer.toString(currentFurniture.count) + "\n");
+            for (int y = 0; y < totalY; y++) 
+            {
+                for (int x = 0; x < totalX; x++) 
+                {
+                    if(!fields[x][y].getText().isEmpty())
+                    {
+                        sortArray[numberOfEntries] = fields[x][y].getText();
+                        numberOfEntries++;
+                    }
+                }
             }
             
+            Arrays.sort(sortArray, 0, numberOfEntries);
+            
+            currentItem = sortArray[0];
+            currentCount = 1;
+            
+            for (int i = 1; i <= numberOfEntries; i++)
+            {
+                if (currentItem.equals(sortArray[i])) 
+                {
+                    currentCount++;
+                }
+                else
+                {
+                    txtSort.append(currentItem + "\t" + currentCount + "\n");
+                    currentItem = sortArray[i];
+                    currentCount = 1;
+                }
+            }
         }
+        
+        //Colour Buttons
         if (e.getSource() == btnGreen)
         {
             currentColour = Color.GREEN;
@@ -354,58 +424,23 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
         }
     }
        
-    public String checkInteger(String strValue)
+    private void SearchData(String searchString)
     {
-        try 
+        for (int y = 0; y < totalY; y++)
         {
-            Integer.parseInt(strValue);
-            return strValue;
-        }
-        catch (Exception e) 
-        {
-            return "0";
-        }
-    }
-    
-    public void sortAndDisplayFurniture(){
-        Furniture testing = new Furniture();
-        testing.count = 1;
-        testing.name = "testing";
-        allFurniture.add(testing);
-        
-        
-        for(Furniture currentFurniture: allFurniture)
-        {
-            int attempts = 0;
-            for(CellData currentCell: cellData)
+            for (int x = 0; x < totalX; x++)
             {
-                if (currentFurniture.name.equals(currentCell.cellContents))
+                if (fields[x][y].getText().equalsIgnoreCase(searchString) && !searchString.isEmpty())
                 {
-                    currentFurniture.count += 1;
-                    break;
+                    fields[x][y].setBorder(new LineBorder(Color.BLACK, 5));
                 }
-                else
-                {
-                    attempts += 1;
+                else{
+                    fields[x][y].setBorder(new LineBorder(Color.BLACK, 1));
                 }
-                
-                if (attempts == (CellDataCounter + 1)) 
-                {
-                    Furniture newFurniture = new Furniture();
-                    newFurniture.name = currentCell.cellContents;
-                    newFurniture.count = 1;
-                    break;
-                }
+            }
         }
     }
-
-                
-                
-                
-    }
-    
-    
-            
+  
     //</editor-fold>    
 
     
