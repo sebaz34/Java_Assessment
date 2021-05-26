@@ -61,7 +61,7 @@ public class RoomPlanner extends JFrame implements ActionListener, KeyListener, 
     private JButton btnGreen, btnRed, btnPurple, btnYellow, btnBlue, btnWhite;
     private JLabel[] horizontalLabels = new JLabel[11];
     private JLabel[] verticalLabels = new JLabel[19];
-    private String dataFileName = "ClientRoom1_Data_20220307.csv";
+    private String dataFileName = "Sample Data File 2.txt";
     
     public Heading headings[] = new Heading[4];
     public CellData cellData[] = new CellData[209];

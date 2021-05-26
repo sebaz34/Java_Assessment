@@ -1,0 +1,17 @@
+0,0,Desk,Yellow,Yes
+1,0,Desk,Yellow,Yes
+2,0,Desk,Yellow,Yes
+3,0,Desk,Yellow,Yes
+4,0,Desk,Yellow,Yes
+5,0,Desk,Yellow,Yes
+6,0,Desk,Yellow,Yes
+7,0,Desk,Yellow,Yes
+8,0,Desk,Yellow,Yes
+0,12,Glass Door,Blue,Yes
+0,13,Glass Door,Blue,Yes
+0,14,Glass Door,Blue,Yes
+0,15,Glass Door,Blue,Yes
+Client:,Sample Client
+Site:,City
+Room:,Second Boardroom
+Date:,Apr-23
