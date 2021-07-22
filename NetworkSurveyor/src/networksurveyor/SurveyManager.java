@@ -5,6 +5,9 @@
  */
 package networksurveyor;
 
+import java.util.ArrayList;
+import javax.swing.table.AbstractTableModel;
+
 /**
  *
  * @author sebas
@@ -96,17 +99,7 @@ public class SurveyManager extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 51, 255));
 
-        tblQuestionSelector.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        tblQuestionSelector.setModel(setTableModel());
         tblQuestionSelector.setName("tblQuestionSelector"); // NOI18N
         jScrollPane2.setViewportView(tblQuestionSelector);
 
@@ -512,7 +505,13 @@ public class SurveyManager extends javax.swing.JFrame {
             }
         });
         
-        
+    }
+    
+    public MyModel setTableModel()
+    {
+        NetworkSurveyor ns = new NetworkSurveyor();
+        questionTableModel = ns.getTableModel();
+        return questionTableModel;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -567,5 +566,8 @@ public class SurveyManager extends javax.swing.JFrame {
     public javax.swing.JLabel txtTableTitle;
     public javax.swing.JLabel txtTitle;
     // End of variables declaration//GEN-END:variables
+    //Or is it...?
+    public MyModel questionTableModel;
+    
 
 }
