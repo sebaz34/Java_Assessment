@@ -11,75 +11,99 @@ import javax.swing.table.AbstractTableModel;
 /**
  *
  * @author sebas
+ * 
+ * 
+ * USE THIS FOR FURTHER CHANGES:
+ * https://tips4java.wordpress.com/2008/11/21/row-table-model/
  */
-public class MyModel extends AbstractTableModel {
-    
-        //the data
-        ArrayList<Question> al;
-
-        // the headers
-        String[] header;
-        
-        // to hold the column index for the Sent column
-        int col;
-
-        // constructor 
-        MyModel(ArrayList<Question> obj, String[] header)
+public class MyModel extends AbstractTableModel 
+{
+    private String[] columnNames =
+    {
+        "Qn#",
+        "Topic",
+        "Question"
+    };
+ 
+    private ArrayList<Question> questions;
+ 
+    public MyModel()
+    {
+        questions = new ArrayList<Question>();
+    }
+ 
+    public MyModel(ArrayList<Question> questions)
+    {
+        this.questions = questions;
+    }
+ 
+    @Override
+    public int getColumnCount()
+    {
+        return columnNames.length;
+    }
+ 
+    @Override
+    public String getColumnName(int column)
+    {
+        return columnNames[column];
+    }
+ 
+    @Override
+    public int getRowCount()
+    {
+        return questions.size();
+    }
+ 
+    @Override
+    public Class getColumnClass(int column)
+    {
+        switch (column)
         {
-            // save the header
-            this.header = header;
-            // and the data
-            al = obj;
-            // get the column index for the Sent column
-            col = this.findColumn("Sent");
-        }
-
-        // method that needs to be overload. The row count is the size of the ArrayList
-
-        public int getRowCount()
-        {
-            return al.size();
-        }
-
-        // method that needs to be overload. The column count is the size of our header
-        public int getColumnCount()
-        {
-            return header.length;
-        }
-
-        // method that needs to be overload. The object is in the arrayList at rowIndex
-        public Question getValueAt(int rowIndex, int columnIndex)
-        {
-            return al.get(rowIndex);
-        }
-
-        // a method to return the column name 
-        public String getColumnName(int index)
-        {
-            return header[index];
-        }
-        
-        public Class getColumnClass(int columnIndex) 
-        {
-            if (columnIndex == col) 
-            {
-                return Boolean.class; // For every cell in column 7, set its class to Boolean.class
-            }
-            return super.getColumnClass(columnIndex); // Otherwise, set it to the default class
-	}
-
-        // a method to add a new line to the table
-        void add(String word1, String word2, boolean sent)
-        {
-//            // make it an array[3] as this is the way it is stored in the ArrayList
-//            // (not best design but we want simplicity)
-//            Object[] item = new Object[3];
-//            item[0] = word1;
-//            item[1] = word2;
-//            item[2] = sent;
-//            al.add(item);
-//            // inform the GUI that I have change
-            fireTableDataChanged();
+            case 0: return int.class;
+            default: return String.class;
         }
     }
+ 
+    @Override
+    public boolean isCellEditable(int row, int column)
+    {
 
+       return false;
+        
+    }   
+ 
+    @Override
+    public Object getValueAt(int row, int column)
+    {
+        Question question = getQuestion(row);
+
+        switch (column)
+        {
+            case 0: return question.getNumber();
+            case 1: return question.getTopic();
+            case 2: return question.getQuestion();
+            default: return null;
+        }
+    }
+ 
+    @Override
+    public void setValueAt(Object value, int row, int column)
+    {
+        Question question = getQuestion(row);
+
+        switch (column)
+        {
+            case 0: question.setNumber((int)value); break;
+            case 1: question.setTopic((String)value); break;
+            case 2: question.setQuestion((String)value); break;
+        }
+
+        fireTableCellUpdated(row, column);
+    }
+ 
+    public Question getQuestion(int row)
+    {
+        return questions.get( row );
+    }
+    }

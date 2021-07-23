@@ -510,8 +510,7 @@ public class SurveyManager extends javax.swing.JFrame {
     public MyModel setTableModel()
     {
         NetworkSurveyor ns = new NetworkSurveyor();
-        questionTableModel = ns.getTableModel();
-        return questionTableModel;
+        return questionTableModel = ns.getTableModel();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

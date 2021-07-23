@@ -54,7 +54,7 @@ public class NetworkSurveyor {
     public MyModel getTableModel()
     {
         // instantiate JTable model
-        questionTableModel = new MyModel(getQuestionList(), getColumnNames());
+        questionTableModel = new MyModel(getQuestionList());
         return questionTableModel;
     }
     
