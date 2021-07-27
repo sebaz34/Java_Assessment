@@ -510,7 +510,7 @@ public class SurveyManager extends javax.swing.JFrame {
     public MyModel setTableModel()
     {
         NetworkSurveyor ns = new NetworkSurveyor();
-        return questionTableModel = ns.getTableModel();
+        return ns.getTableModel();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -565,8 +565,6 @@ public class SurveyManager extends javax.swing.JFrame {
     public javax.swing.JLabel txtTableTitle;
     public javax.swing.JLabel txtTitle;
     // End of variables declaration//GEN-END:variables
-    //Or is it...?
-    public MyModel questionTableModel;
-    
+  
 
 }

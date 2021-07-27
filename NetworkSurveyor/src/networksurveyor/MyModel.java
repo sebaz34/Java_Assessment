@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package networksurveyor;
 
 import java.util.ArrayList;
@@ -60,7 +55,6 @@ public class MyModel extends AbstractTableModel
     {
         switch (column)
         {
-            case 0: return int.class;
             default: return String.class;
         }
     }
@@ -94,7 +88,7 @@ public class MyModel extends AbstractTableModel
 
         switch (column)
         {
-            case 0: question.setNumber((int)value); break;
+            case 0: question.setNumber((String)value); break;
             case 1: question.setTopic((String)value); break;
             case 2: question.setQuestion((String)value); break;
         }

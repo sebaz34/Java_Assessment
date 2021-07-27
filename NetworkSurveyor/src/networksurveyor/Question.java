@@ -13,7 +13,7 @@ public class Question {
     //Variables
     public String question;
     public String topic;
-    public int number;
+    public String number;
     public String answerA;
     public String answerB;
     public String answerC;
@@ -25,7 +25,7 @@ public class Question {
         
     }
     
-    public void newQuestion(String q, String t, int n, String a, String b, String c, String d, String e)
+    public void newQuestion(String q, String t, String n, String a, String b, String c, String d, String e)
     {
         //assign passed through values to new object varible
         question = q;
@@ -57,11 +57,11 @@ public class Question {
         this.topic = topic;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -104,7 +104,7 @@ public class Question {
     public void setAnswerE(String answerE) {
         this.answerE = answerE;
     }
-    
+        
     //</editor-fold>
     
     
