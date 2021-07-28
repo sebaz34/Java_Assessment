@@ -14,6 +14,12 @@ import javax.swing.table.AbstractTableModel;
  */
 public class SurveyManager extends javax.swing.JFrame {
 
+    //Global Variables
+    NetworkSurveyor ns = new NetworkSurveyor();
+    
+    
+    //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
+    
     /**
      * Creates new form SurveyManager
      */
@@ -101,6 +107,11 @@ public class SurveyManager extends javax.swing.JFrame {
 
         tblQuestionSelector.setModel(setTableModel());
         tblQuestionSelector.setName("tblQuestionSelector"); // NOI18N
+        tblQuestionSelector.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblQuestionSelectorMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblQuestionSelector);
 
         txtTableTitle.setText("Survey Questions");
@@ -135,11 +146,6 @@ public class SurveyManager extends javax.swing.JFrame {
         txtQTopic.setName("txtQTopic"); // NOI18N
 
         txtQAnswerA.setName("txtQAnswerA"); // NOI18N
-        txtQAnswerA.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtQAnswerAActionPerformed(evt);
-            }
-        });
 
         txtQAnswerB.setName("txtQAnswerB"); // NOI18N
 
@@ -333,6 +339,8 @@ public class SurveyManager extends javax.swing.JFrame {
         );
 
         txtTitle.setBackground(new java.awt.Color(255, 153, 0));
+        txtTitle.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        txtTitle.setForeground(new java.awt.Color(0, 0, 0));
         txtTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtTitle.setText("Survey By Network");
         txtTitle.setName("txtTitle"); // NOI18N
@@ -464,9 +472,11 @@ public class SurveyManager extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtQAnswerAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQAnswerAActionPerformed
+    private void tblQuestionSelectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQuestionSelectorMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtQAnswerAActionPerformed
+        int selectedRow = tblQuestionSelector.getSelectedRow();
+        DisplayQuestion(selectedRow);
+    }//GEN-LAST:event_tblQuestionSelectorMouseClicked
 
     /**
      * @param args the command line arguments
@@ -494,9 +504,6 @@ public class SurveyManager extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(SurveyManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -507,10 +514,32 @@ public class SurveyManager extends javax.swing.JFrame {
         
     }
     
+    //</editor-fold>
+    
+    //Method called when setting up table
+    //Returns JTable Model for table
     public MyModel setTableModel()
     {
-        NetworkSurveyor ns = new NetworkSurveyor();
         return ns.getTableModel();
+    }
+    
+    //Method called when line in table is selected
+    //Responsible for assinging question values to right pane
+    public void DisplayQuestion(int row)
+    {
+        //Bring over questionList array from NetworkSurveyor
+        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
+        //Assign currentQuestion to selected question
+        Question currentQuestion = questionList.get(row);
+        //Assign txt fields to display question fields
+        txtQQuestion.setText(currentQuestion.question);
+        txtQTopic.setText(currentQuestion.topic);
+        lblQuestionNum.setText(currentQuestion.number);
+        txtQAnswerA.setText(currentQuestion.answerA);
+        txtQAnswerB.setText(currentQuestion.answerB);
+        txtQAnswerC.setText(currentQuestion.answerC);
+        txtQAnswerD.setText(currentQuestion.answerD);
+        txtQAnswerE.setText(currentQuestion.answerE);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

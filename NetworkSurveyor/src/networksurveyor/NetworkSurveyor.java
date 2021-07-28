@@ -14,6 +14,7 @@ public class NetworkSurveyor {
     MyModel questionTableModel;
     JTable table;
     String fileName = "SurveyByNetwork_SampleData.txt";
+    ArrayList<Question> questionList = new ArrayList();
     
 
 
@@ -36,11 +37,8 @@ public class NetworkSurveyor {
     }
     
     //Method Responsible for reading in questions from file and creating objects of each question in memory
-    public ArrayList<Question> getQuestionList()
+    public ArrayList<Question> getQuestionListFromFile()
     {
-        //Create master list of questions
-        ArrayList<Question> questionList = new ArrayList();
-        
         //Read in data from text file
         try
         {
@@ -87,11 +85,17 @@ public class NetworkSurveyor {
         return questionList;
     }
     
+    //Creates and returns Table Model
     public MyModel getTableModel()
     {
         // instantiate JTable model
-        questionTableModel = new MyModel(getQuestionList());
+        questionTableModel = new MyModel(getQuestionListFromFile());
         return questionTableModel;
     }
     
+    //Pulls from memory the questionList array
+    public ArrayList<Question> getQuestionListFromMemory()
+    {
+        return questionList;
+    }
  }
