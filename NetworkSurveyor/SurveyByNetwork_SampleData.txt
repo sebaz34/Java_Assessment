@@ -1,11 +1,3 @@
-QuestionNumber
-Topic
-Question
-AnswerA
-AnswerB
-AnswerC
-AnswerD
-AnswerE
 11
 Requirements
 All the requirements were identified.

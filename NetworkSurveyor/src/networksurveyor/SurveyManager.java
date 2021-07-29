@@ -16,6 +16,7 @@ public class SurveyManager extends javax.swing.JFrame {
 
     //Global Variables
     NetworkSurveyor ns = new NetworkSurveyor();
+    MyModel globalTableModel = new MyModel();
     
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
@@ -240,6 +241,11 @@ public class SurveyManager extends javax.swing.JFrame {
 
         btnSortQN.setText("QN#");
         btnSortQN.setName("btnSortQN#"); // NOI18N
+        btnSortQN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortQNActionPerformed(evt);
+            }
+        });
 
         btnSortTopic.setText("Topic");
         btnSortTopic.setName("btnSortTopic"); // NOI18N
@@ -478,6 +484,10 @@ public class SurveyManager extends javax.swing.JFrame {
         DisplayQuestion(selectedRow);
     }//GEN-LAST:event_tblQuestionSelectorMouseClicked
 
+    private void btnSortQNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortQNActionPerformed
+        bubbleSortQN();
+    }//GEN-LAST:event_btnSortQNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -520,7 +530,8 @@ public class SurveyManager extends javax.swing.JFrame {
     //Returns JTable Model for table
     public MyModel setTableModel()
     {
-        return ns.getTableModel();
+        globalTableModel = ns.getTableModel();
+        return globalTableModel;
     }
     
     //Method called when line in table is selected
@@ -541,7 +552,57 @@ public class SurveyManager extends javax.swing.JFrame {
         txtQAnswerD.setText(currentQuestion.answerD);
         txtQAnswerE.setText(currentQuestion.answerE);
     }
+    
+    //Run when QN# button is pressed
+    //Used to sort question data by question number
+    public void bubbleSortQN()
+    {
+        //Bring over questionList array from NetworkSurveyor
+        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
+        
+        //Begin Sorting
+        for(int j=0; j<questionList.size(); j++)
+        {
+            for (int i = j+1; i < questionList.size(); i++) 
+            {
+                int comparisonResult = Integer.compare(Integer.parseInt(questionList.get(i).getNumber()), Integer.parseInt(questionList.get(j).getNumber()));
+                if(comparisonResult>0)
+                {
+                    Question tempQuestion = new Question();
+                    tempQuestion = questionList.get(i);
+                    questionList.set(i, questionList.get(j));
+                    questionList.set(j, tempQuestion);
+                }
+            }
+        }
+        //Tell table model that the data has changed
+        globalTableModel.fireTableDataChanged();
+    }
 
+    //Run when Topic button is pressed
+    //Used to sort question data by topic element
+//    public void selctionSortTopic()
+//    {
+//        //Bring over questionList array from NetworkSurveyor
+//        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
+//        
+//        //Begin Sorting
+//        for (int i = questionList.size()-1 ; i > 0; i--) 
+//        {
+//            String first = questionList.get(0).getTopic();
+//            for (int j = 1; j <= i; j++)
+//            {
+//                if (questionList.get(j).getTopic().compareTo(first)>0) 
+//                {
+//                    first = questionList.get(j).getTopic();
+//                }
+//                String temp = questionList.get(i).getTopic();
+//                
+//            }
+//        }
+//    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnDisplayBinaryTree;
     public javax.swing.JButton btnDisplayInOrder;
