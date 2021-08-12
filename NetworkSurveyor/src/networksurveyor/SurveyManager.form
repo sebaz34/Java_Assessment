@@ -409,7 +409,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSortTopic" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnSortAnswer" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSortQuestion" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnExit" min="-2" pref="89" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -424,7 +424,7 @@
                       <Component id="lblSortBy" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnSortQN" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnSortTopic" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnSortAnswer" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnSortQuestion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnExit" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -459,14 +459,17 @@
             <Property name="text" type="java.lang.String" value="Topic"/>
             <Property name="name" type="java.lang.String" value="btnSortTopic" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSortTopicActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="btnSortAnswer">
+        <Component class="javax.swing.JButton" name="btnSortQuestion">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Answer"/>
-            <Property name="name" type="java.lang.String" value="btnSortAnswer" noResource="true"/>
+            <Property name="text" type="java.lang.String" value="Question"/>
+            <Property name="name" type="java.lang.String" value="btnSortQuestion" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

@@ -65,7 +65,7 @@ public class SurveyManager extends javax.swing.JFrame {
         lblSortBy = new javax.swing.JLabel();
         btnSortQN = new javax.swing.JButton();
         btnSortTopic = new javax.swing.JButton();
-        btnSortAnswer = new javax.swing.JButton();
+        btnSortQuestion = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lblLinkedList = new javax.swing.JLabel();
@@ -249,9 +249,14 @@ public class SurveyManager extends javax.swing.JFrame {
 
         btnSortTopic.setText("Topic");
         btnSortTopic.setName("btnSortTopic"); // NOI18N
+        btnSortTopic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortTopicActionPerformed(evt);
+            }
+        });
 
-        btnSortAnswer.setText("Answer");
-        btnSortAnswer.setName("btnSortAnswer"); // NOI18N
+        btnSortQuestion.setText("Question");
+        btnSortQuestion.setName("btnSortQuestion"); // NOI18N
 
         btnExit.setText("Exit");
         btnExit.setName("btnExit"); // NOI18N
@@ -268,7 +273,7 @@ public class SurveyManager extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSortTopic)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSortAnswer)
+                .addComponent(btnSortQuestion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -281,7 +286,7 @@ public class SurveyManager extends javax.swing.JFrame {
                     .addComponent(lblSortBy)
                     .addComponent(btnSortQN)
                     .addComponent(btnSortTopic)
-                    .addComponent(btnSortAnswer)
+                    .addComponent(btnSortQuestion)
                     .addComponent(btnExit))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -488,6 +493,10 @@ public class SurveyManager extends javax.swing.JFrame {
         bubbleSortQN();
     }//GEN-LAST:event_btnSortQNActionPerformed
 
+    private void btnSortTopicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortTopicActionPerformed
+        selctionSortTopic();
+    }//GEN-LAST:event_btnSortTopicActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -581,26 +590,52 @@ public class SurveyManager extends javax.swing.JFrame {
 
     //Run when Topic button is pressed
     //Used to sort question data by topic element
-//    public void selctionSortTopic()
-//    {
-//        //Bring over questionList array from NetworkSurveyor
-//        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
-//        
-//        //Begin Sorting
-//        for (int i = questionList.size()-1 ; i > 0; i--) 
-//        {
-//            String first = questionList.get(0).getTopic();
-//            for (int j = 1; j <= i; j++)
-//            {
-//                if (questionList.get(j).getTopic().compareTo(first)>0) 
-//                {
-//                    first = questionList.get(j).getTopic();
-//                }
-//                String temp = questionList.get(i).getTopic();
-//                
-//            }
-//        }
-//    }
+    public void selctionSortTopic()
+    {
+        //Bring over questionList array from NetworkSurveyor
+        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
+        
+        //Declaring counters
+        Question smallestQuestion = new Question();
+        
+        //Begin Sorting
+        for (int currentStep = 0; currentStep < questionList.size(); currentStep++) 
+        {
+            String smallestTopic = questionList.get(currentStep+1).getTopic();
+            
+            int smallestQuestionIndex = 0;
+            
+            for (int j = currentStep +1; j < questionList.size(); j++)
+            {
+                if (questionList.get(currentStep).getTopic().compareTo(smallestTopic)>0) 
+                {
+                    smallestTopic = questionList.get(j).getTopic();
+                    smallestQuestion = questionList.get(j);
+                    smallestQuestionIndex = j;
+                }
+            }
+            if (questionList.get(currentStep) != smallestQuestion)
+            {
+                Question swappedQuestion = new Question();
+                swappedQuestion = questionList.get(currentStep); 
+                
+                questionList.add(currentStep, smallestQuestion);
+                questionList.remove(currentStep +1);
+                questionList.remove(smallestQuestionIndex);
+                questionList.add(smallestQuestionIndex ,swappedQuestion);
+                
+//                questionList.add(currentStep, smallestQuestion);
+//                questionList.remove(smallestQuestionIndex);
+//                questionList.remove(currentStep);
+//                questionList.add(smallestQuestionIndex, swappedQuestion);
+                
+            }
+
+        }
+        
+        //Display updated table data
+        globalTableModel.fireTableDataChanged();
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -613,8 +648,8 @@ public class SurveyManager extends javax.swing.JFrame {
     public javax.swing.JButton btnSavePostOrder;
     public javax.swing.JButton btnSavePreOrder;
     public javax.swing.JButton btnSendQuestion;
-    public javax.swing.JButton btnSortAnswer;
     public javax.swing.JButton btnSortQN;
+    public javax.swing.JButton btnSortQuestion;
     public javax.swing.JButton btnSortTopic;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
