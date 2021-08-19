@@ -15,6 +15,7 @@ public class NetworkSurveyor {
     JTable table;
     String fileName = "SurveyByNetwork_SampleData.txt";
     ArrayList<Question> questionList = new ArrayList();
+    DList dList = new DList();
     
 
 
