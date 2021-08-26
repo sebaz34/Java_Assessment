@@ -15,7 +15,7 @@ public class NetworkSurveyor {
     JTable table;
     String fileName = "SurveyByNetwork_SampleData.txt";
     ArrayList<Question> questionList = new ArrayList();
-    DList dList = new DList();
+    //DList dList = new DList();
     
 
 
@@ -91,6 +91,12 @@ public class NetworkSurveyor {
     {
         // instantiate JTable model
         questionTableModel = new MyModel(getQuestionListFromFile());
+        return questionTableModel;
+    }
+    
+    public MyModel setTableModel(ArrayList<Question> masterList)
+    {
+        questionTableModel = new MyModel(masterList);
         return questionTableModel;
     }
     

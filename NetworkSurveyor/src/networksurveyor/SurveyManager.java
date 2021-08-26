@@ -6,6 +6,7 @@
 package networksurveyor;
 
 import java.util.ArrayList;
+import java.util.Set;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -592,50 +593,45 @@ public class SurveyManager extends javax.swing.JFrame {
     //Used to sort question data by topic element
     public void selctionSortTopic()
     {
-        //Bring over questionList array from NetworkSurveyor
-        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
+        ArrayList<Question> masterList = ns.getQuestionListFromMemory();
+        int n = masterList.size();
         
-        //Declaring counters
-        Question smallestQuestion = new Question();
-        
-        //Begin Sorting
-        for (int currentStep = 0; currentStep < questionList.size(); currentStep++) 
+        for(int i = 0; i < n - 1; i++)
         {
-            String smallestTopic = questionList.get(currentStep+1).getTopic();
-            
-            int smallestQuestionIndex = 0;
-            
-            for (int j = currentStep +1; j < questionList.size(); j++)
-            {
-                if (questionList.get(currentStep).getTopic().compareTo(smallestTopic)>0) 
-                {
-                    smallestTopic = questionList.get(j).getTopic();
-                    smallestQuestion = questionList.get(j);
-                    smallestQuestionIndex = j;
-                }
-            }
-            if (questionList.get(currentStep) != smallestQuestion)
-            {
-                Question swappedQuestion = new Question();
-                swappedQuestion = questionList.get(currentStep); 
-                
-                questionList.add(currentStep, smallestQuestion);
-                questionList.remove(currentStep +1);
-                questionList.remove(smallestQuestionIndex);
-                questionList.add(smallestQuestionIndex ,swappedQuestion);
-                
-//                questionList.add(currentStep, smallestQuestion);
-//                questionList.remove(smallestQuestionIndex);
-//                questionList.remove(currentStep);
-//                questionList.add(smallestQuestionIndex, swappedQuestion);
-                
-            }
-
-        }
+     
+        // Find the minimum element in unsorted array
+        int min_index = i;
+        String minStr = masterList.get(i).getTopic();
         
-        //Display updated table data
+        for(int j = i + 1; j < n; j++)
+        {
+             
+            /*compareTo() will return a -ve value,
+            if string1 (arr[j]) is smaller than string2 (minStr)*/
+            // If arr[j] is smaller than minStr
+         
+            if(masterList.get(j).getTopic().compareTo(minStr) < 0)
+            {
+                // Make arr[j] as minStr and update min_idx
+                minStr = masterList.get(j).getTopic();
+                min_index = j;
+            }
+        }
+
+        // Swapping the minimum element
+        // found with the first element.
+        if(min_index != i)
+        {
+            Question temp = masterList.get(min_index);
+            masterList.set(min_index, masterList.get(i));
+            //arr[min_index] = arr[i];
+            masterList.set(i, temp);
+            //arr[i] = temp;
+        }
+        }
         globalTableModel.fireTableDataChanged();
-    }
+    }       
+           
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
