@@ -258,6 +258,11 @@ public class SurveyManager extends javax.swing.JFrame {
 
         btnSortQuestion.setText("Question");
         btnSortQuestion.setName("btnSortQuestion"); // NOI18N
+        btnSortQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortQuestionActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("Exit");
         btnExit.setName("btnExit"); // NOI18N
@@ -498,6 +503,10 @@ public class SurveyManager extends javax.swing.JFrame {
         selctionSortTopic();
     }//GEN-LAST:event_btnSortTopicActionPerformed
 
+    private void btnSortQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortQuestionActionPerformed
+        insertionSortQuestion();
+    }//GEN-LAST:event_btnSortQuestionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -564,7 +573,7 @@ public class SurveyManager extends javax.swing.JFrame {
     }
     
     //Run when QN# button is pressed
-    //Used to sort question data by question number
+    //Used to sort question data by question number element
     public void bubbleSortQN()
     {
         //Bring over questionList array from NetworkSurveyor
@@ -599,40 +608,85 @@ public class SurveyManager extends javax.swing.JFrame {
         for(int i = 0; i < n - 1; i++)
         {
      
-        // Find the minimum element in unsorted array
-        int min_index = i;
-        String minStr = masterList.get(i).getTopic();
-        
-        for(int j = i + 1; j < n; j++)
-        {
-             
-            /*compareTo() will return a -ve value,
-            if string1 (arr[j]) is smaller than string2 (minStr)*/
-            // If arr[j] is smaller than minStr
-         
-            if(masterList.get(j).getTopic().compareTo(minStr) < 0)
-            {
-                // Make arr[j] as minStr and update min_idx
-                minStr = masterList.get(j).getTopic();
-                min_index = j;
-            }
-        }
+            // Find the minimum element in unsorted array
+            int min_index = i;
+            String minStr = masterList.get(i).getTopic();
 
-        // Swapping the minimum element
-        // found with the first element.
-        if(min_index != i)
-        {
-            Question temp = masterList.get(min_index);
-            masterList.set(min_index, masterList.get(i));
-            //arr[min_index] = arr[i];
-            masterList.set(i, temp);
-            //arr[i] = temp;
-        }
+            for(int j = i + 1; j < n; j++)
+            {
+
+                /*compareTo() will return a -ve value,
+                if string1 (arr[j]) is smaller than string2 (minStr)*/
+                // If arr[j] is smaller than minStr
+
+                if(masterList.get(j).getTopic().compareTo(minStr) < 0)
+                {
+                    // Make arr[j] as minStr and update min_idx
+                    minStr = masterList.get(j).getTopic();
+                    min_index = j;
+                }
+            }
+
+            // Swapping the minimum element
+            // found with the first element.
+            if(min_index != i)
+            {
+                Question temp = masterList.get(min_index);
+                masterList.set(min_index, masterList.get(i));
+                //arr[min_index] = arr[i];
+                masterList.set(i, temp);
+                //arr[i] = temp;
+            }
         }
         globalTableModel.fireTableDataChanged();
     }       
-           
     
+    //Run when Question button is pressed
+    //Used to sort question data by question element
+    public void insertionSortQuestion()
+    {
+        ArrayList<Question> masterList = ns.getQuestionListFromMemory();
+        
+        Boolean sortingRequired = false;
+        
+        for (int i = 0; i < masterList.size() - 1; i++) 
+        {
+            Question baseQuestion = masterList.get(i+1);
+            
+            for (int j = i; j >= 0; j--) 
+            {
+                Question comparisonQuestion = masterList.get(j);
+                
+                if (baseQuestion.getQuestion().compareToIgnoreCase(comparisonQuestion.getQuestion()) < 0)
+                {
+                    sortingRequired = true;
+                }
+            }
+            
+            if (sortingRequired) 
+            {
+                int indexOfBaseQuestion = masterList.indexOf(baseQuestion);
+                int sortedIndex = 0;
+                
+                for (int z = indexOfBaseQuestion; z >= 0; z--) 
+                {
+                    Question comparisonQuestion = masterList.get(z);
+                    
+                    if (baseQuestion.getQuestion().compareToIgnoreCase(comparisonQuestion.getQuestion()) < 0) 
+                    {
+                        sortedIndex = masterList.indexOf(comparisonQuestion);
+                        Question temp = masterList.get(sortedIndex);
+                        masterList.set(sortedIndex, baseQuestion);
+                        masterList.set(indexOfBaseQuestion, temp);
+                        indexOfBaseQuestion --;
+                        baseQuestion = masterList.get(indexOfBaseQuestion);
+                    }
+                }
+            }
+            sortingRequired = false;
+        }
+        globalTableModel.fireTableDataChanged();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnDisplayBinaryTree;
