@@ -5,13 +5,13 @@ package networksurveyor;
 
 public class BinaryTree {
 
-	Node root;
+	BTNode root;
 
 	public void addNode(int key, String name) {
 
 		// Create a new Node and initialize it
 
-		Node newNode = new Node(key, name);
+		BTNode newNode = new BTNode(key, name);
 
 		// If there is no root this becomes root
 
@@ -24,11 +24,11 @@ public class BinaryTree {
 			// Set root as the Node we will start
 			// with as we traverse the tree
 
-			Node focusNode = root;
+			BTNode focusNode = root;
 
 			// Future parent for our new Node
 
-			Node parent;
+			BTNode parent;
 
 			while (true) {
 
@@ -83,7 +83,7 @@ public class BinaryTree {
 	// Recursion is used to go to one node and
 	// then go to its child nodes and so forth
 
-	public void inOrderTraverseTree(Node focusNode) {
+	public void inOrderTraverseTree(BTNode focusNode) {
 
 		if (focusNode != null) {
 
@@ -103,7 +103,7 @@ public class BinaryTree {
 
 	}
 
-	public void preorderTraverseTree(Node focusNode) {
+	public void preorderTraverseTree(BTNode focusNode) {
 
 		if (focusNode != null) {
 
@@ -116,7 +116,7 @@ public class BinaryTree {
 
 	}
 
-	public void postOrderTraverseTree(Node focusNode) {
+	public void postOrderTraverseTree(BTNode focusNode) {
 
 		if (focusNode != null) {
 
@@ -129,11 +129,11 @@ public class BinaryTree {
 
 	}
 
-	public Node findNode(int key) {
+	public BTNode findNode(int key) {
 
 		// Start at the top of the tree
 
-		Node focusNode = root;
+		BTNode focusNode = root;
 
 		// While we haven't found the Node
 		// keep looking
@@ -200,15 +200,15 @@ public static void main(String[] args) {
 }
 }
 
-class Node {
+class BTNode {
 
 	int key;
 	String name;
 
-	Node leftChild;
-	Node rightChild;
+	BTNode leftChild;
+	BTNode rightChild;
 
-	Node(int key, String name) {
+	BTNode(int key, String name) {
 
 		this.key = key;
 		this.name = name;
