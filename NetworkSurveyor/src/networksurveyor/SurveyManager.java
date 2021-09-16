@@ -18,6 +18,8 @@ public class SurveyManager extends javax.swing.JFrame {
     //Global Variables
     NetworkSurveyor ns = new NetworkSurveyor();
     MyModel globalTableModel = new MyModel();
+    LLNode llNode = new LLNode();
+    DList dList = new DList();
     
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
@@ -164,6 +166,11 @@ public class SurveyManager extends javax.swing.JFrame {
 
         btnSendQuestion.setText("Send");
         btnSendQuestion.setName("btnSendQuestion"); // NOI18N
+        btnSendQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendQuestionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlQuestionDetailLayout = new javax.swing.GroupLayout(pnlQuestionDetail);
         pnlQuestionDetail.setLayout(pnlQuestionDetailLayout);
@@ -507,6 +514,10 @@ public class SurveyManager extends javax.swing.JFrame {
         insertionSortQuestion();
     }//GEN-LAST:event_btnSortQuestionActionPerformed
 
+    private void btnSendQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendQuestionActionPerformed
+        SendLinkedList();
+    }//GEN-LAST:event_btnSendQuestionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -541,9 +552,12 @@ public class SurveyManager extends javax.swing.JFrame {
             }
         });
         
+        
     }
     
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Background Functionality -- Table Model Setup, Starting Network Communications">
     
     //Method called when setting up table
     //Returns JTable Model for table
@@ -552,6 +566,16 @@ public class SurveyManager extends javax.swing.JFrame {
         globalTableModel = ns.getTableModel();
         return globalTableModel;
     }
+    
+    //Method called upon startup
+    //Responsible for connecting thread to server
+    public void StartNetworkCommunication(){
+        
+    }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="UI Methods -- Methods Called When UI Interaction Occurs">
     
     //Method called when line in table is selected
     //Responsible for assinging question values to right pane
@@ -571,6 +595,39 @@ public class SurveyManager extends javax.swing.JFrame {
         txtQAnswerD.setText(currentQuestion.answerD);
         txtQAnswerE.setText(currentQuestion.answerE);
     }
+    
+    //Method called when send button is pressed
+    //Responsible for creating new Linked List object
+    public void SendLinkedList(){
+        //Obtain question that is currently selected
+        //Get QN from text field
+        String qn = lblQuestionNum.getText();
+        //Get matching question from Array
+        Question sentQuestion = null;
+        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
+        for (Question question: questionList) 
+        {
+            if (question.number.equalsIgnoreCase(qn)) 
+            {
+                sentQuestion = question;
+            }
+        }
+        //Create node with contents of this questions
+        LLNode newNode = null;
+        if (sentQuestion != null) 
+        {
+            newNode = new LLNode(sentQuestion);
+        }
+        //Insert node into LL
+        if (newNode != null) 
+        {
+            dList.head.prev.append(newNode);
+        }
+        //Update LL Txt Field
+        UpdateLLTxtField();
+    }
+    
+    //<editor-fold defaultstate="collapsed" desc="Sorting Algorithms -- Bubble, Selection, Insertion">
     
     //Run when QN# button is pressed
     //Used to sort question data by question number element
@@ -687,6 +744,22 @@ public class SurveyManager extends javax.swing.JFrame {
         }
         globalTableModel.fireTableDataChanged();
     }
+    
+    //</editor-fold>
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Text Field Updates -- Methods Responsible for Updating Text Fields When Required">
+    
+    //Method called at the end of method responsible for send button action
+    //Used to update the LLTxtField with the current values of the Linked List
+    public void UpdateLLTxtField()
+    {
+        String printValue = dList.print();
+        txtLinkedList.setText(printValue);
+    }
+    
+    //</editor-fold>
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnDisplayBinaryTree;
