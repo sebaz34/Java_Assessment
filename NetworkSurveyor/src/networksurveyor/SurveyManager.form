@@ -534,6 +534,7 @@
             <Component class="javax.swing.JTextArea" name="txtLinkedList">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
+                <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
                 <Property name="name" type="java.lang.String" value="txtLinkedList" noResource="true"/>
               </Properties>
@@ -602,6 +603,7 @@
             <Component class="javax.swing.JTextArea" name="txtBinaryTree">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
+                <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
                 <Property name="name" type="java.lang.String" value="txtBinaryTree" noResource="true"/>
               </Properties>
@@ -701,6 +703,9 @@
             <Property name="text" type="java.lang.String" value="Display"/>
             <Property name="name" type="java.lang.String" value="btnDisplayPre-Order" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDisplayPreOrderActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
@@ -728,6 +733,9 @@
             <Property name="text" type="java.lang.String" value="Display"/>
             <Property name="name" type="java.lang.String" value="btnDisplayIn-Order" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDisplayInOrderActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
@@ -755,6 +763,9 @@
             <Property name="text" type="java.lang.String" value="Display"/>
             <Property name="name" type="java.lang.String" value="btnDisplayPost-Order" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDisplayPostOrderActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>

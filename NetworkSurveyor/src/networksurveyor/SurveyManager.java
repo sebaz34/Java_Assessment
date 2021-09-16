@@ -21,7 +21,7 @@ public class SurveyManager extends javax.swing.JFrame {
     MyModel globalTableModel = new MyModel();
     LLNode llNode = new LLNode();
     DList dList = new DList();
-    BinaryTree bTree = new BinaryTree();
+    BinaryTree bTree = new BinaryTree(this);
     
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
@@ -310,6 +310,7 @@ public class SurveyManager extends javax.swing.JFrame {
         lblLinkedList.setName("lblLinkedList"); // NOI18N
 
         txtLinkedList.setColumns(20);
+        txtLinkedList.setLineWrap(true);
         txtLinkedList.setRows(5);
         txtLinkedList.setName("txtLinkedList"); // NOI18N
         jScrollPane5.setViewportView(txtLinkedList);
@@ -338,6 +339,7 @@ public class SurveyManager extends javax.swing.JFrame {
         btnDisplayBinaryTree.setName("btnDisplayBinaryTree"); // NOI18N
 
         txtBinaryTree.setColumns(20);
+        txtBinaryTree.setLineWrap(true);
         txtBinaryTree.setRows(5);
         txtBinaryTree.setName("txtBinaryTree"); // NOI18N
         jScrollPane6.setViewportView(txtBinaryTree);
@@ -377,6 +379,11 @@ public class SurveyManager extends javax.swing.JFrame {
 
         btnDisplayPreOrder.setText("Display");
         btnDisplayPreOrder.setName("btnDisplayPre-Order"); // NOI18N
+        btnDisplayPreOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDisplayPreOrderActionPerformed(evt);
+            }
+        });
 
         btnSavePreOrder.setText("Save");
         btnSavePreOrder.setName("btnSavePre-Order"); // NOI18N
@@ -386,6 +393,11 @@ public class SurveyManager extends javax.swing.JFrame {
 
         btnDisplayInOrder.setText("Display");
         btnDisplayInOrder.setName("btnDisplayIn-Order"); // NOI18N
+        btnDisplayInOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDisplayInOrderActionPerformed(evt);
+            }
+        });
 
         btnSaveInOrder.setText("Save");
         btnSaveInOrder.setName("btnSaveIn-Order"); // NOI18N
@@ -395,6 +407,11 @@ public class SurveyManager extends javax.swing.JFrame {
 
         btnDisplayPostOrder.setText("Display");
         btnDisplayPostOrder.setName("btnDisplayPost-Order"); // NOI18N
+        btnDisplayPostOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDisplayPostOrderActionPerformed(evt);
+            }
+        });
 
         btnSavePostOrder.setText("Save");
         btnSavePostOrder.setName("btnSavePost-Order"); // NOI18N
@@ -539,6 +556,27 @@ public class SurveyManager extends javax.swing.JFrame {
 
         
     }//GEN-LAST:event_btnSendQuestionActionPerformed
+
+    private void btnDisplayPreOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayPreOrderActionPerformed
+        //Clear the Binary Tree txt field
+        ClearBTTxtField();
+        //Traverse the tree in a preordered fashion
+        bTree.preorderTraverseTree(bTree.root);
+    }//GEN-LAST:event_btnDisplayPreOrderActionPerformed
+
+    private void btnDisplayInOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayInOrderActionPerformed
+        //Clear the Binary Tree txt field
+        ClearBTTxtField();
+        //Traverse the tree in a ordered fashion
+        bTree.inOrderTraverseTree(bTree.root);
+    }//GEN-LAST:event_btnDisplayInOrderActionPerformed
+
+    private void btnDisplayPostOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayPostOrderActionPerformed
+        //Clear the Binary Tree txt field
+        ClearBTTxtField();
+        //Traverse the tree in a postordered fashion
+        bTree.postOrderTraverseTree(bTree.root);
+    }//GEN-LAST:event_btnDisplayPostOrderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -769,6 +807,16 @@ public class SurveyManager extends javax.swing.JFrame {
     {
         String printValue = dList.print();
         txtLinkedList.setText(printValue);
+    }
+    
+    public void UpdateBTTxtField(int qn, String question)
+    {
+        txtBinaryTree.append("--" + Integer.toString(qn) + ": " + question);
+    }
+    
+    public void ClearBTTxtField()
+    {
+        txtBinaryTree.setText("");
     }
     
     //</editor-fold>

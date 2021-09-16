@@ -5,7 +5,14 @@ package networksurveyor;
 
 
 public class BinaryTree {
-
+        
+    //Global Variables
+    SurveyManager sm;
+    
+    
+    public BinaryTree(SurveyManager inputtedSM){
+        sm = inputtedSM;
+    }
 	Node root;
 
 	public void addNode(int key, String name) {
@@ -86,6 +93,7 @@ public class BinaryTree {
 
 	public void inOrderTraverseTree(Node focusNode) {
 
+            
 		if (focusNode != null) {
 
 			// Traverse the left node
@@ -93,9 +101,8 @@ public class BinaryTree {
 			inOrderTraverseTree(focusNode.leftChild);
 
 			// Visit the currently focused on node
-
-			System.out.println(focusNode);
-
+			//System.out.println(focusNode);
+                        sm.UpdateBTTxtField(focusNode.key, focusNode.name);
 			// Traverse the right node
 
 			inOrderTraverseTree(focusNode.rightChild);
@@ -108,7 +115,8 @@ public class BinaryTree {
 
 		if (focusNode != null) {
 
-			System.out.println(focusNode);
+                        //System.out.println(focusNode);
+                        sm.UpdateBTTxtField(focusNode.key, focusNode.name);
 
 			preorderTraverseTree(focusNode.leftChild);
 			preorderTraverseTree(focusNode.rightChild);
@@ -124,7 +132,8 @@ public class BinaryTree {
 			postOrderTraverseTree(focusNode.leftChild);
 			postOrderTraverseTree(focusNode.rightChild);
 
-			System.out.println(focusNode);
+			//System.out.println(focusNode);
+                        sm.UpdateBTTxtField(focusNode.key, focusNode.name);
 
 		}
 
@@ -169,9 +178,6 @@ public class BinaryTree {
 	}
 
 public static void main(String[] args) {
-
-		BinaryTree theTree = new BinaryTree();
-
 
 		// Different ways to traverse binary trees
 
