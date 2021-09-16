@@ -1,17 +1,18 @@
+package networksurveyor;
+
 //Source:  http://www.newthinktank.com/2013/03/binary-tree-in-java/
 // New Think Tank
 
-package networksurveyor;
 
 public class BinaryTree {
 
-	BTNode root;
+	Node root;
 
 	public void addNode(int key, String name) {
 
 		// Create a new Node and initialize it
 
-		BTNode newNode = new BTNode(key, name);
+		Node newNode = new Node(key, name);
 
 		// If there is no root this becomes root
 
@@ -24,11 +25,11 @@ public class BinaryTree {
 			// Set root as the Node we will start
 			// with as we traverse the tree
 
-			BTNode focusNode = root;
+			Node focusNode = root;
 
 			// Future parent for our new Node
 
-			BTNode parent;
+			Node parent;
 
 			while (true) {
 
@@ -83,7 +84,7 @@ public class BinaryTree {
 	// Recursion is used to go to one node and
 	// then go to its child nodes and so forth
 
-	public void inOrderTraverseTree(BTNode focusNode) {
+	public void inOrderTraverseTree(Node focusNode) {
 
 		if (focusNode != null) {
 
@@ -103,7 +104,7 @@ public class BinaryTree {
 
 	}
 
-	public void preorderTraverseTree(BTNode focusNode) {
+	public void preorderTraverseTree(Node focusNode) {
 
 		if (focusNode != null) {
 
@@ -116,7 +117,7 @@ public class BinaryTree {
 
 	}
 
-	public void postOrderTraverseTree(BTNode focusNode) {
+	public void postOrderTraverseTree(Node focusNode) {
 
 		if (focusNode != null) {
 
@@ -129,11 +130,11 @@ public class BinaryTree {
 
 	}
 
-	public BTNode findNode(int key) {
+	public Node findNode(int key) {
 
 		// Start at the top of the tree
 
-		BTNode focusNode = root;
+		Node focusNode = root;
 
 		// While we haven't found the Node
 		// keep looking
@@ -171,17 +172,6 @@ public static void main(String[] args) {
 
 		BinaryTree theTree = new BinaryTree();
 
-		theTree.addNode(50, "Boss");
-
-		theTree.addNode(25, "Vice President");
-
-		theTree.addNode(15, "Office Manager");
-
-		theTree.addNode(30, "Secretary");
-
-		theTree.addNode(75, "Sales Manager");
-
-		theTree.addNode(85, "Salesman 1");
 
 		// Different ways to traverse binary trees
 
@@ -193,22 +183,18 @@ public static void main(String[] args) {
 
 		// Find the node with key 75
 
-		System.out.println("\nNode with the key 75");
-
-		System.out.println(theTree.findNode(75));
-
 }
 }
 
-class BTNode {
+class Node {
 
 	int key;
 	String name;
 
-	BTNode leftChild;
-	BTNode rightChild;
+	Node leftChild;
+	Node rightChild;
 
-	BTNode(int key, String name) {
+	Node(int key, String name) {
 
 		this.key = key;
 		this.name = name;

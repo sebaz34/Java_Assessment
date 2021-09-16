@@ -5,6 +5,7 @@
  */
 package networksurveyor;
 
+import static java.lang.System.console;
 import java.util.ArrayList;
 import java.util.Set;
 import javax.swing.table.AbstractTableModel;
@@ -20,6 +21,7 @@ public class SurveyManager extends javax.swing.JFrame {
     MyModel globalTableModel = new MyModel();
     LLNode llNode = new LLNode();
     DList dList = new DList();
+    BinaryTree bTree = new BinaryTree();
     
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
@@ -515,7 +517,27 @@ public class SurveyManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSortQuestionActionPerformed
 
     private void btnSendQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendQuestionActionPerformed
-        SendLinkedList();
+        //Obtain and store in memory the selected question data
+        //Get QN from text field
+        String qn = lblQuestionNum.getText();
+        //Get matching question from Array
+        Question sentQuestion = null;
+        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
+        for (Question question: questionList) 
+        {
+            if (question.number.equalsIgnoreCase(qn)) 
+            {
+                sentQuestion = question;
+            }
+        }
+        //If question valid, implement desired actions
+        if (sentQuestion != null) 
+        {
+            SendLinkedList(sentQuestion);
+            SendBinaryTree(sentQuestion.number, sentQuestion.question);
+        }
+
+        
     }//GEN-LAST:event_btnSendQuestionActionPerformed
 
     /**
@@ -598,33 +620,23 @@ public class SurveyManager extends javax.swing.JFrame {
     
     //Method called when send button is pressed
     //Responsible for creating new Linked List object
-    public void SendLinkedList(){
-        //Obtain question that is currently selected
-        //Get QN from text field
-        String qn = lblQuestionNum.getText();
-        //Get matching question from Array
-        Question sentQuestion = null;
-        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
-        for (Question question: questionList) 
-        {
-            if (question.number.equalsIgnoreCase(qn)) 
-            {
-                sentQuestion = question;
-            }
-        }
+    public void SendLinkedList(Question sentQuestion){
+
         //Create node with contents of this questions
-        LLNode newNode = null;
-        if (sentQuestion != null) 
-        {
-            newNode = new LLNode(sentQuestion);
-        }
+        LLNode newNode = new LLNode(sentQuestion);
+        
         //Insert node into LL
-        if (newNode != null) 
-        {
-            dList.head.prev.append(newNode);
-        }
+        dList.head.prev.append(newNode);
+        
         //Update LL Txt Field
         UpdateLLTxtField();
+    }
+    
+    //Method called when send button is pressed
+    //Responsible for creating a new entry in the binary tree
+    public void SendBinaryTree(String qn, String question)
+    {
+        bTree.addNode(Integer.parseInt(qn), question);
     }
     
     //<editor-fold defaultstate="collapsed" desc="Sorting Algorithms -- Bubble, Selection, Insertion">
