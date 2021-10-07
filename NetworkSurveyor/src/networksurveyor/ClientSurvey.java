@@ -11,6 +11,8 @@ package networksurveyor;
  */
 public class ClientSurvey extends javax.swing.JFrame {
 
+    ChatClient surveyClient = new ChatClient("clienthost", 7777);
+    
     /**
      * Creates new form ClientSurvey
      */
@@ -50,6 +52,7 @@ public class ClientSurvey extends javax.swing.JFrame {
         txtYourAnswer = new javax.swing.JTextField();
         btnSubmit = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        btnConnect = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -185,6 +188,13 @@ public class ClientSurvey extends javax.swing.JFrame {
 
         btnExit.setText("Exit");
 
+        btnConnect.setText("Connect");
+        btnConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConnectActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -197,6 +207,8 @@ public class ClientSurvey extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(btnSubmit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnConnect)
+                .addGap(18, 18, 18)
                 .addComponent(btnExit)
                 .addContainerGap())
         );
@@ -208,7 +220,8 @@ public class ClientSurvey extends javax.swing.JFrame {
                     .addComponent(lblYourAnswer)
                     .addComponent(txtYourAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSubmit)
-                    .addComponent(btnExit))
+                    .addComponent(btnExit)
+                    .addComponent(btnConnect))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -238,6 +251,10 @@ public class ClientSurvey extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
+        surveyClient.connect("clienthost", 7777);
+    }//GEN-LAST:event_btnConnectActionPerformed
 
     /**
      * @param args the command line arguments
@@ -274,7 +291,10 @@ public class ClientSurvey extends javax.swing.JFrame {
         });
     }
 
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConnect;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JPanel jPanel1;

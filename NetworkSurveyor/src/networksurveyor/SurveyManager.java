@@ -22,6 +22,7 @@ public class SurveyManager extends javax.swing.JFrame {
     LLNode llNode = new LLNode();
     DList dList = new DList();
     BinaryTree bTree = new BinaryTree(this);
+    ChatServer questionServer = new ChatServer(7777);
     
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
@@ -71,7 +72,9 @@ public class SurveyManager extends javax.swing.JFrame {
         btnSortQN = new javax.swing.JButton();
         btnSortTopic = new javax.swing.JButton();
         btnSortQuestion = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
+        btnEndServer = new javax.swing.JButton();
+        lblServer = new javax.swing.JLabel();
+        btnStartServer = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lblLinkedList = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -273,8 +276,22 @@ public class SurveyManager extends javax.swing.JFrame {
             }
         });
 
-        btnExit.setText("Exit");
-        btnExit.setName("btnExit"); // NOI18N
+        btnEndServer.setText("End");
+        btnEndServer.setName("btnEndServer"); // NOI18N
+        btnEndServer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEndServerActionPerformed(evt);
+            }
+        });
+
+        lblServer.setText("Server");
+
+        btnStartServer.setText("Start");
+        btnStartServer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartServerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -290,8 +307,15 @@ public class SurveyManager extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSortQuestion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnStartServer)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEndServer)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblServer)
+                        .addGap(57, 57, 57))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,9 +325,14 @@ public class SurveyManager extends javax.swing.JFrame {
                     .addComponent(lblSortBy)
                     .addComponent(btnSortQN)
                     .addComponent(btnSortTopic)
-                    .addComponent(btnSortQuestion)
-                    .addComponent(btnExit))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSortQuestion))
+                .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(lblServer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEndServer)
+                    .addComponent(btnStartServer)))
         );
 
         lblLinkedList.setText("Linked List:");
@@ -469,10 +498,10 @@ public class SurveyManager extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                        .addGap(84, 84, 84)
                         .addComponent(pnlQuestionDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(191, 191, 191)
@@ -535,23 +564,24 @@ public class SurveyManager extends javax.swing.JFrame {
 
     private void btnSendQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendQuestionActionPerformed
         //Obtain and store in memory the selected question data
-        //Get QN from text field
-        String qn = lblQuestionNum.getText();
-        //Get matching question from Array
-        Question sentQuestion = null;
-        ArrayList<Question> questionList = ns.getQuestionListFromMemory();
-        for (Question question: questionList) 
+        Question sentQuestion = new Question();
+        sentQuestion.topic = txtQTopic.getText();
+        sentQuestion.question = txtQQuestion.getText();
+        sentQuestion.number = lblQuestionNum.getText();
+        sentQuestion.answerA = txtQAnswerA.getText();
+        sentQuestion.answerB = txtQAnswerB.getText();
+        sentQuestion.answerC = txtQAnswerC.getText();
+        sentQuestion.answerD = txtQAnswerD.getText();
+        sentQuestion.answerE = txtQAnswerE.getText();
+        
+        
+        if (sentQuestion.question != null) 
         {
-            if (question.number.equalsIgnoreCase(qn)) 
-            {
-                sentQuestion = question;
-            }
-        }
-        //If question valid, implement desired actions
-        if (sentQuestion != null) 
-        {
+            questionServer.handle(1, sentQuestion);
+            
             SendLinkedList(sentQuestion);
             SendBinaryTree(sentQuestion.number, sentQuestion.question);
+            
         }
 
         
@@ -577,6 +607,14 @@ public class SurveyManager extends javax.swing.JFrame {
         //Traverse the tree in a postordered fashion
         bTree.postOrderTraverseTree(bTree.root);
     }//GEN-LAST:event_btnDisplayPostOrderActionPerformed
+
+    private void btnStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartServerActionPerformed
+        questionServer.run();
+    }//GEN-LAST:event_btnStartServerActionPerformed
+
+    private void btnEndServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndServerActionPerformed
+        questionServer.stop();
+    }//GEN-LAST:event_btnEndServerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -611,7 +649,6 @@ public class SurveyManager extends javax.swing.JFrame {
                 new SurveyManager().setVisible(true);
             }
         });
-        
         
     }
     
@@ -826,7 +863,7 @@ public class SurveyManager extends javax.swing.JFrame {
     public javax.swing.JButton btnDisplayInOrder;
     public javax.swing.JButton btnDisplayPostOrder;
     public javax.swing.JButton btnDisplayPreOrder;
-    public javax.swing.JButton btnExit;
+    public javax.swing.JButton btnEndServer;
     public javax.swing.JButton btnSaveInOrder;
     public javax.swing.JButton btnSavePostOrder;
     public javax.swing.JButton btnSavePreOrder;
@@ -834,6 +871,7 @@ public class SurveyManager extends javax.swing.JFrame {
     public javax.swing.JButton btnSortQN;
     public javax.swing.JButton btnSortQuestion;
     public javax.swing.JButton btnSortTopic;
+    private javax.swing.JButton btnStartServer;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -857,6 +895,7 @@ public class SurveyManager extends javax.swing.JFrame {
     public javax.swing.JLabel lblPreOrder;
     public javax.swing.JLabel lblQN;
     public javax.swing.JLabel lblQuestionNum;
+    private javax.swing.JLabel lblServer;
     public javax.swing.JLabel lblSortBy;
     public javax.swing.JLabel lblTopic;
     private javax.swing.JPanel pnlQuestionDetail;

@@ -327,6 +327,8 @@
                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   <Component id="btnSubmit" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="btnConnect" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnExit" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -341,6 +343,7 @@
                       <Component id="txtYourAnswer" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnSubmit" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnExit" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnConnect" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -371,6 +374,14 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Exit"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnConnect">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Connect"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConnectActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
