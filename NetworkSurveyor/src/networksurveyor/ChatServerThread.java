@@ -25,11 +25,11 @@ public class ChatServerThread extends Thread
         ID = socket.getPort();
     }
 
-    public void send(Question question)
+    public void send(String msg)
     {
         try
         {
-            streamOut.writeUTF(question);
+            streamOut.writeUTF(msg);
             streamOut.flush();
         }
         catch (IOException ioe)
@@ -50,7 +50,7 @@ public class ChatServerThread extends Thread
         System.out.println("Server Thread " + ID + " running.");
         while (true)
         {
-            server.handle(ID, question);
+
         }
     }
 

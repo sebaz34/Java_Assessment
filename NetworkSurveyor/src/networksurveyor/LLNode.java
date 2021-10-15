@@ -18,6 +18,8 @@ class LLNode {              // class for nodes in a doubly-linked list
   LLNode prev;              // previous LLNode in a doubly-linked list
   LLNode next;              // next LLNode in a doubly-linked list
   Question question;
+  int sumAnswers;           //sum of all answers together
+  int numAnswers;           //Num of answers recieved
   //public char data;       // data stored in this LLNode
   LLNode() {                // constructor for head LLNode 
     prev= this;           // of an empty doubly-linked list
@@ -30,6 +32,8 @@ class LLNode {              // class for nodes in a doubly-linked list
     prev= null;
     next = null;
     question = newQuestion;
+    sumAnswers = 0;
+    numAnswers = 0;
     //this.data = data;     // set argument data to instance variable data
   }
 
@@ -71,6 +75,14 @@ class DList {
     System.out.println("QN " + num + " not found");
     return null;
   }
+  
+  //Method to find AND update average answer value in a node
+  public void updateAverageAnswer(String qNum, int newAnswer)
+  {
+      LLNode desiredNode = find(qNum);
+      desiredNode.sumAnswers += newAnswer;
+      desiredNode.numAnswers += 1;
+  }
 
   public String print() {                  // print content of list
     String returnString = " ";
@@ -80,7 +92,11 @@ class DList {
     }
     returnString = returnString + "List Content = ";
     for (LLNode  current = head.next; current != head; current = current.next) {
-      returnString = returnString + "QN: " + current.question.number + " Question: " + current.question.question + ", ";
+        int averageAnswer = 0;
+        if (current.numAnswers != 0) {
+            averageAnswer = current.numAnswers/current.sumAnswers;
+        }
+        returnString = returnString + "QN: " + current.question.number + " || Question: " + current.question.question + " || Number of Answers: " + current.numAnswers + "Average Answer: " + averageAnswer + ", ";
     }
     return returnString;
   }

@@ -11,7 +11,7 @@ package networksurveyor;
  */
 public class ClientSurvey extends javax.swing.JFrame {
 
-    ChatClient surveyClient = new ChatClient("clienthost", 7777);
+    ChatClient surveyClient = new ChatClient("localhost", 7777, this);
     
     /**
      * Creates new form ClientSurvey
@@ -49,10 +49,10 @@ public class ClientSurvey extends javax.swing.JFrame {
         txtQQuestion = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         lblYourAnswer = new javax.swing.JLabel();
-        txtYourAnswer = new javax.swing.JTextField();
         btnSubmit = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         btnConnect = new javax.swing.JButton();
+        cmbAnswer = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -182,11 +182,19 @@ public class ClientSurvey extends javax.swing.JFrame {
         lblYourAnswer.setText("Your Answer:");
         lblYourAnswer.setToolTipText("");
 
-        txtYourAnswer.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-
         btnSubmit.setText("Submit");
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         btnConnect.setText("Connect");
         btnConnect.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +202,8 @@ public class ClientSurvey extends javax.swing.JFrame {
                 btnConnectActionPerformed(evt);
             }
         });
+
+        cmbAnswer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Answer", "A", "B", "C", "D", "E" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -203,8 +213,8 @@ public class ClientSurvey extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblYourAnswer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtYourAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addComponent(cmbAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSubmit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnConnect)
@@ -218,10 +228,10 @@ public class ClientSurvey extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblYourAnswer)
-                    .addComponent(txtYourAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSubmit)
                     .addComponent(btnExit)
-                    .addComponent(btnConnect))
+                    .addComponent(btnConnect)
+                    .addComponent(cmbAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -253,8 +263,16 @@ public class ClientSurvey extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
-        surveyClient.connect("clienthost", 7777);
+        surveyClient.connect("localhost", 7777);
     }//GEN-LAST:event_btnConnectActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        compileMessage();
+    }//GEN-LAST:event_btnSubmitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -291,12 +309,27 @@ public class ClientSurvey extends javax.swing.JFrame {
         });
     }
 
-    
-    
+    //Method used to compile and send message to be sent
+    private void compileMessage()
+    {
+        int answer;
+        String message = "SENTA; ";
+        
+        //Get Answer value from drop down combo box
+        answer = cmbAnswer.getSelectedIndex();
+        
+        //Get message string from fields on screen
+        message += lblQuestionNum.getText() + "; ";
+        message += answer;
+      
+        surveyClient.handle(message);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConnect;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSubmit;
+    public javax.swing.JComboBox<String> cmbAnswer;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane4;
     public javax.swing.JLabel lblA;
@@ -317,6 +350,5 @@ public class ClientSurvey extends javax.swing.JFrame {
     public javax.swing.JTextArea txtQQuestion;
     public javax.swing.JTextField txtQTopic;
     public javax.swing.JLabel txtTitle;
-    public javax.swing.JTextField txtYourAnswer;
     // End of variables declaration//GEN-END:variables
 }

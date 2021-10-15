@@ -23,6 +23,7 @@ public class SurveyManager extends javax.swing.JFrame {
     DList dList = new DList();
     BinaryTree bTree = new BinaryTree(this);
     ChatServer questionServer = new ChatServer(7777);
+    ChatClient questionClient = new ChatClient("localhost" , 7777, this);
     
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
@@ -545,7 +546,6 @@ public class SurveyManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblQuestionSelectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQuestionSelectorMouseClicked
-        // TODO add your handling code here:
         int selectedRow = tblQuestionSelector.getSelectedRow();
         DisplayQuestion(selectedRow);
     }//GEN-LAST:event_tblQuestionSelectorMouseClicked
@@ -564,23 +564,37 @@ public class SurveyManager extends javax.swing.JFrame {
 
     private void btnSendQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendQuestionActionPerformed
         //Obtain and store in memory the selected question data
-        Question sentQuestion = new Question();
-        sentQuestion.topic = txtQTopic.getText();
-        sentQuestion.question = txtQQuestion.getText();
-        sentQuestion.number = lblQuestionNum.getText();
-        sentQuestion.answerA = txtQAnswerA.getText();
-        sentQuestion.answerB = txtQAnswerB.getText();
-        sentQuestion.answerC = txtQAnswerC.getText();
-        sentQuestion.answerD = txtQAnswerD.getText();
-        sentQuestion.answerE = txtQAnswerE.getText();
+        Question qSentQuestion = new Question();
+        String sentQuestion = "SENTQ; ";
         
+        //Save selected Question to Question Format
+        qSentQuestion.question = txtQQuestion.getText();
+        qSentQuestion.topic = txtQTopic.getText();
+        qSentQuestion.number = lblQuestionNum.getText();
+        qSentQuestion.answerA = txtQAnswerA.getText();
+        qSentQuestion.answerB = txtQAnswerB.getText();
+        qSentQuestion.answerC = txtQAnswerC.getText();
+        qSentQuestion.answerD = txtQAnswerD.getText();
+        qSentQuestion.answerE = txtQAnswerE.getText();
         
-        if (sentQuestion.question != null) 
+        //Convert Selected Question To String Format
+        sentQuestion += txtQQuestion.getText() + "; ";
+        sentQuestion += txtQTopic.getText() + "; ";
+        sentQuestion += lblQuestionNum.getText() + "; ";
+        sentQuestion += txtQAnswerA.getText() + "; ";
+        sentQuestion += txtQAnswerB.getText() + "; ";
+        sentQuestion += txtQAnswerC.getText() + "; ";
+        sentQuestion += txtQAnswerD.getText() + "; ";
+        sentQuestion += txtQAnswerE.getText() + "; ";
+        
+        //Null Question handling
+        if (!sentQuestion.contains("; ;"))
         {
+            
             questionServer.handle(1, sentQuestion);
             
-            SendLinkedList(sentQuestion);
-            SendBinaryTree(sentQuestion.number, sentQuestion.question);
+            SendLinkedList(qSentQuestion);
+            SendBinaryTree(qSentQuestion.number, qSentQuestion.question);
             
         }
 
@@ -610,6 +624,7 @@ public class SurveyManager extends javax.swing.JFrame {
 
     private void btnStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartServerActionPerformed
         questionServer.run();
+        questionClient.connect("localhost", 7777);
     }//GEN-LAST:event_btnStartServerActionPerformed
 
     private void btnEndServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndServerActionPerformed
@@ -654,7 +669,7 @@ public class SurveyManager extends javax.swing.JFrame {
     
     //</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="Background Functionality -- Table Model Setup, Starting Network Communications">
+    //<editor-fold defaultstate="collapsed" desc="Background Functionality -- Table Model Setup, Monitoring Answer Totals">
     
     //Method called when setting up table
     //Returns JTable Model for table
@@ -664,10 +679,13 @@ public class SurveyManager extends javax.swing.JFrame {
         return globalTableModel;
     }
     
-    //Method called upon startup
-    //Responsible for connecting thread to server
-    public void StartNetworkCommunication(){
-        
+    //Method called from ChatClient class
+    //Responsible for maintaing current answer values in linked list
+    public void UpdateLinkedList(String qNum, String qAnswer)
+    {
+        int answer = Integer.parseInt(qAnswer);
+        dList.updateAverageAnswer(qNum, answer);
+        UpdateLLTxtField();
     }
     
     //</editor-fold>

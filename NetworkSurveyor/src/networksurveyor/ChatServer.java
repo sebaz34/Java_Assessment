@@ -78,9 +78,10 @@ public class ChatServer implements Runnable
         return -1;
     }
 
-    public synchronized void handle(int ID, Question question)
+    public synchronized void handle(int ID, String message)
     {
-        if (question.question.equalsIgnoreCase(".bye"))
+        
+        if (message.contains(".bye"))
         {
             clients[findClient(ID)].send(".bye");
             remove(ID);
@@ -90,7 +91,7 @@ public class ChatServer implements Runnable
             for (int i = 0; i < clientCount; i++)
             {
                 if(clients[i].getID() != ID){
-                clients[i].send(ID + ": " + question);
+                clients[i].send(message);
                 }
             }
         }
@@ -152,7 +153,7 @@ public class ChatServer implements Runnable
         if (args.length != 1)
         {
             //System.out.println("Usage: java ChatServer port");
-            server = new ChatServer(4444);
+            server = new ChatServer(7777);
         }
         else
         {

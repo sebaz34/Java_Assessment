@@ -19,8 +19,8 @@ public class ChatClient extends Frame
     private DataInputStream console = null;
     private DataOutputStream streamOut = null;
     private ChatClientThread client = null;
-    private String serverName = "localhost";
-    private int serverPort = 7777;
+    private SurveyManager parentSurveyManager = null;
+    private ClientSurvey parentClientSurvey = null;
 
     
 
@@ -28,9 +28,16 @@ public class ChatClient extends Frame
     {
     }
 
-    public ChatClient(String nameServer, int port)
+    public ChatClient(String nameServer, int port, SurveyManager pSurveyManager)
     {
         connect(nameServer, port);
+        parentSurveyManager = pSurveyManager;
+    }
+    
+    public ChatClient(String nameServer, int port, ClientSurvey pClientSurvey)
+    {
+        connect(nameServer, port);
+        parentClientSurvey = pClientSurvey;
     }
 
     public void connect(String serverName, int serverPort)
@@ -76,8 +83,6 @@ public class ChatClient extends Frame
         else
         {
             println(msg);
-
-           
         }
     }
 
@@ -117,15 +122,47 @@ public class ChatClient extends Frame
 
     void println(String msg)
     {
-        System.out.println(msg + "\n");
+        if (msg.contains("SENTQ; ") || msg.contains("SENTA; ")) 
+        {
+            //Pull apart question message data
+            String[] questionData = new String[10];
+            questionData = msg.split(";");
+
+            if (parentClientSurvey != null) 
+            {
+                if (questionData[0].equals("SENTQ")) 
+                {
+                    parentClientSurvey.txtQQuestion.setText(questionData[1]);
+                    parentClientSurvey.txtQTopic.setText(questionData[2]);
+                    parentClientSurvey.lblQuestionNum.setText(questionData[3]);
+                    parentClientSurvey.txtQAnswerA.setText(questionData[4]);
+                    parentClientSurvey.txtQAnswerB.setText(questionData[5]);
+                    parentClientSurvey.txtQAnswerC.setText(questionData[6]);
+                    parentClientSurvey.txtQAnswerD.setText(questionData[7]);
+                    parentClientSurvey.txtQAnswerE.setText(questionData[8]);
+                }
+            }
+
+            if (parentSurveyManager != null) 
+            {
+                if (questionData[0].equals("SENTA"))
+                {
+                    parentSurveyManager.UpdateLinkedList(questionData[1], questionData[2]);
+
+                }
+            }
+        }
+        else
+        {
+            System.out.println(msg);
+        }
+        
+        
+        
     }
 
     public void getParameters()
     {
-//        serverName = getParameter("host");
-//        serverPort = Integer.parseInt(getParameter("port"));
-        
-        serverName = "localhost";
-        serverPort = 4444;        
+    
     }
     }
