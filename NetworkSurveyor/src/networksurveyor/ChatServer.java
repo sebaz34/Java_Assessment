@@ -90,9 +90,10 @@ public class ChatServer implements Runnable
         {
             for (int i = 0; i < clientCount; i++)
             {
-                if(clients[i].getID() != ID){
+                //if(clients[i].getID() != ID){
                 clients[i].send(message);
-                }
+                System.out.println("Message Sent: "+message);
+                //}
             }
         }
     }
@@ -150,6 +151,7 @@ public class ChatServer implements Runnable
     public static void main(String args[])
     {
         ChatServer server;
+        
         if (args.length != 1)
         {
             //System.out.println("Usage: java ChatServer port");

@@ -30,14 +30,14 @@ public class ChatClient extends Frame
 
     public ChatClient(String nameServer, int port, SurveyManager pSurveyManager)
     {
-        connect(nameServer, port);
         parentSurveyManager = pSurveyManager;
+        connect(nameServer, port);
     }
     
     public ChatClient(String nameServer, int port, ClientSurvey pClientSurvey)
     {
-        connect(nameServer, port);
         parentClientSurvey = pClientSurvey;
+        connect(nameServer, port);
     }
 
     public void connect(String serverName, int serverPort)
@@ -69,6 +69,20 @@ public class ChatClient extends Frame
         catch (IOException ioe)
         {
             println("Sending error: " + ioe.getMessage());
+            close();
+        }
+    }
+    
+    public void send(String message)
+    {
+        try
+        {
+            streamOut.writeUTF(message);
+            streamOut.flush();
+        }
+        catch(IOException ioe)
+        {
+            println("Sending Error:" + ioe.getMessage());
             close();
         }
     }
@@ -148,7 +162,7 @@ public class ChatClient extends Frame
                 if (questionData[0].equals("SENTA"))
                 {
                     parentSurveyManager.UpdateLinkedList(questionData[1], questionData[2]);
-
+                    
                 }
             }
         }

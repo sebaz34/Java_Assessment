@@ -92,9 +92,9 @@ class DList {
     }
     returnString = returnString + "List Content = ";
     for (LLNode  current = head.next; current != head; current = current.next) {
-        int averageAnswer = 0;
+        double averageAnswer = 0;
         if (current.numAnswers != 0) {
-            averageAnswer = current.numAnswers/current.sumAnswers;
+            averageAnswer = (double) current.sumAnswers / (double) current.numAnswers;
         }
         returnString = returnString + "QN: " + current.question.number + " || Question: " + current.question.question + " || Number of Answers: " + current.numAnswers + "Average Answer: " + averageAnswer + ", ";
     }

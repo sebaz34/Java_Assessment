@@ -15,7 +15,6 @@ public class ChatServerThread extends Thread
     private int ID = -1;
     private DataInputStream streamIn = null;
     private DataOutputStream streamOut = null;
-    private Question question = new Question();
 
     public ChatServerThread(ChatServer _server, Socket _socket)
     {
@@ -50,7 +49,16 @@ public class ChatServerThread extends Thread
         System.out.println("Server Thread " + ID + " running.");
         while (true)
         {
-
+            try
+            {
+                server.handle(ID, streamIn.readUTF());
+            }
+            catch (IOException ioe)
+            {
+                System.out.println(ID + "Error Reading:" + ioe.getMessage());
+                server.remove(ID);
+                stop();
+            }
         }
     }
 

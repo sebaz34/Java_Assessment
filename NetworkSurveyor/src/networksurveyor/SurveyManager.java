@@ -22,8 +22,7 @@ public class SurveyManager extends javax.swing.JFrame {
     LLNode llNode = new LLNode();
     DList dList = new DList();
     BinaryTree bTree = new BinaryTree(this);
-    ChatServer questionServer = new ChatServer(7777);
-    ChatClient questionClient = new ChatClient("localhost" , 7777, this);
+    ChatClient questionClient = new ChatClient("" , 7777, this);
     
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
@@ -591,16 +590,22 @@ public class SurveyManager extends javax.swing.JFrame {
         if (!sentQuestion.contains("; ;"))
         {
             
-            questionServer.handle(1, sentQuestion);
+            questionClient.send(sentQuestion);
             
             SendLinkedList(qSentQuestion);
             SendBinaryTree(qSentQuestion.number, qSentQuestion.question);
+            
+            //debugging
+            System.out.println(sentQuestion);
             
         }
 
         
     }//GEN-LAST:event_btnSendQuestionActionPerformed
 
+    
+    
+    
     private void btnDisplayPreOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayPreOrderActionPerformed
         //Clear the Binary Tree txt field
         ClearBTTxtField();
@@ -623,12 +628,12 @@ public class SurveyManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDisplayPostOrderActionPerformed
 
     private void btnStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartServerActionPerformed
-        questionServer.run();
+        //questionServer.run();
         questionClient.connect("localhost", 7777);
     }//GEN-LAST:event_btnStartServerActionPerformed
 
     private void btnEndServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndServerActionPerformed
-        questionServer.stop();
+        //questionServer.stop();
     }//GEN-LAST:event_btnEndServerActionPerformed
 
     /**
@@ -683,8 +688,12 @@ public class SurveyManager extends javax.swing.JFrame {
     //Responsible for maintaing current answer values in linked list
     public void UpdateLinkedList(String qNum, String qAnswer)
     {
-        int answer = Integer.parseInt(qAnswer);
-        dList.updateAverageAnswer(qNum, answer);
+        //Clean variables because java is silly
+        String cleanedAnswer = qAnswer.strip();
+        String cleanedQuestionNum = qNum.strip();
+        
+        int answer = Integer.parseInt(cleanedAnswer);
+        dList.updateAverageAnswer(cleanedQuestionNum, answer);
         UpdateLLTxtField();
     }
     

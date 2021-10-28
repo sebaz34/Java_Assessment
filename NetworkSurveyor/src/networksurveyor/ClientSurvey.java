@@ -11,7 +11,7 @@ package networksurveyor;
  */
 public class ClientSurvey extends javax.swing.JFrame {
 
-    ChatClient surveyClient = new ChatClient("localhost", 7777, this);
+    ChatClient surveyClient = new ChatClient("", 7777, this);
     
     /**
      * Creates new form ClientSurvey
@@ -320,9 +320,10 @@ public class ClientSurvey extends javax.swing.JFrame {
         
         //Get message string from fields on screen
         message += lblQuestionNum.getText() + "; ";
-        message += answer;
+        message += answer + "; ";
       
-        surveyClient.handle(message);
+        
+        surveyClient.send(message);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
