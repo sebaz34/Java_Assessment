@@ -5,15 +5,14 @@
  */
 package networksurveyor;
 
-import static java.lang.System.console;
 import java.util.ArrayList;
-import java.util.Set;
-import javax.swing.table.AbstractTableModel;
+import org.apache.commons.lang3.StringUtils;
+import java.util.HashMap;
 
 /**
- *
  * @author sebas
  */
+
 public class SurveyManager extends javax.swing.JFrame {
 
     //Global Variables
@@ -23,6 +22,7 @@ public class SurveyManager extends javax.swing.JFrame {
     DList dList = new DList();
     BinaryTree bTree = new BinaryTree(this);
     ChatClient questionClient = new ChatClient("" , 7777, this);
+    HashMap<String, String> binaryTreeHashMap = new HashMap<String, String>();
     
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
@@ -72,9 +72,6 @@ public class SurveyManager extends javax.swing.JFrame {
         btnSortQN = new javax.swing.JButton();
         btnSortTopic = new javax.swing.JButton();
         btnSortQuestion = new javax.swing.JButton();
-        btnEndServer = new javax.swing.JButton();
-        lblServer = new javax.swing.JLabel();
-        btnStartServer = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lblLinkedList = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -88,13 +85,11 @@ public class SurveyManager extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         lblPreOrder = new javax.swing.JLabel();
         btnDisplayPreOrder = new javax.swing.JButton();
-        btnSavePreOrder = new javax.swing.JButton();
         lblInOrder = new javax.swing.JLabel();
         btnDisplayInOrder = new javax.swing.JButton();
         btnSaveInOrder = new javax.swing.JButton();
         lblPostOrder = new javax.swing.JLabel();
         btnDisplayPostOrder = new javax.swing.JButton();
-        btnSavePostOrder = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -276,23 +271,6 @@ public class SurveyManager extends javax.swing.JFrame {
             }
         });
 
-        btnEndServer.setText("End");
-        btnEndServer.setName("btnEndServer"); // NOI18N
-        btnEndServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEndServerActionPerformed(evt);
-            }
-        });
-
-        lblServer.setText("Server");
-
-        btnStartServer.setText("Start");
-        btnStartServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStartServerActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -306,16 +284,7 @@ public class SurveyManager extends javax.swing.JFrame {
                 .addComponent(btnSortTopic)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSortQuestion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(btnStartServer)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEndServer)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblServer)
-                        .addGap(57, 57, 57))))
+                .addContainerGap(184, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,12 +296,6 @@ public class SurveyManager extends javax.swing.JFrame {
                     .addComponent(btnSortTopic)
                     .addComponent(btnSortQuestion))
                 .addContainerGap(12, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(lblServer)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEndServer)
-                    .addComponent(btnStartServer)))
         );
 
         lblLinkedList.setText("Linked List:");
@@ -414,9 +377,6 @@ public class SurveyManager extends javax.swing.JFrame {
             }
         });
 
-        btnSavePreOrder.setText("Save");
-        btnSavePreOrder.setName("btnSavePre-Order"); // NOI18N
-
         lblInOrder.setText("In-Order");
         lblInOrder.setName("lblIn-Order"); // NOI18N
 
@@ -430,6 +390,11 @@ public class SurveyManager extends javax.swing.JFrame {
 
         btnSaveInOrder.setText("Save");
         btnSaveInOrder.setName("btnSaveIn-Order"); // NOI18N
+        btnSaveInOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveInOrderActionPerformed(evt);
+            }
+        });
 
         lblPostOrder.setText("Post-Order");
         lblPostOrder.setName("lblPost-Order"); // NOI18N
@@ -442,35 +407,32 @@ public class SurveyManager extends javax.swing.JFrame {
             }
         });
 
-        btnSavePostOrder.setText("Save");
-        btnSavePostOrder.setName("btnSavePost-Order"); // NOI18N
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(btnDisplayPreOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSavePreOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(262, 262, 262)
-                .addComponent(btnDisplayInOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSaveInOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 328, Short.MAX_VALUE)
-                .addComponent(btnDisplayPostOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSavePostOrder)
-                .addGap(80, 80, 80))
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(lblPreOrder)
-                .addGap(372, 372, 372)
-                .addComponent(lblInOrder)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(lblPreOrder)
+                        .addGap(372, 372, 372)
+                        .addComponent(lblInOrder))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addComponent(btnDisplayPreOrder)
+                        .addGap(300, 300, 300)
+                        .addComponent(btnDisplayInOrder)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSaveInOrder)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblPostOrder)
-                .addGap(127, 127, 127))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(lblPostOrder)
+                        .addGap(127, 127, 127))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(btnDisplayPostOrder)
+                        .addGap(119, 119, 119))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,11 +444,9 @@ public class SurveyManager extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDisplayPreOrder)
-                    .addComponent(btnSavePreOrder)
                     .addComponent(btnDisplayInOrder)
                     .addComponent(btnSaveInOrder)
-                    .addComponent(btnDisplayPostOrder)
-                    .addComponent(btnSavePostOrder))
+                    .addComponent(btnDisplayPostOrder))
                 .addGap(0, 39, Short.MAX_VALUE))
         );
 
@@ -499,7 +459,7 @@ public class SurveyManager extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(84, 84, 84)
                         .addComponent(pnlQuestionDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -627,14 +587,11 @@ public class SurveyManager extends javax.swing.JFrame {
         bTree.postOrderTraverseTree(bTree.root);
     }//GEN-LAST:event_btnDisplayPostOrderActionPerformed
 
-    private void btnStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartServerActionPerformed
-        //questionServer.run();
-        questionClient.connect("localhost", 7777);
-    }//GEN-LAST:event_btnStartServerActionPerformed
-
-    private void btnEndServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndServerActionPerformed
-        //questionServer.stop();
-    }//GEN-LAST:event_btnEndServerActionPerformed
+    private void btnSaveInOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveInOrderActionPerformed
+        bTree.inOrderTraverseTreeHashReturn(bTree.root);
+        
+        
+    }//GEN-LAST:event_btnSaveInOrderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -689,8 +646,8 @@ public class SurveyManager extends javax.swing.JFrame {
     public void UpdateLinkedList(String qNum, String qAnswer)
     {
         //Clean variables because java is silly
-        String cleanedAnswer = qAnswer.strip();
-        String cleanedQuestionNum = qNum.strip();
+        String cleanedAnswer = StringUtils.strip(qAnswer);
+        String cleanedQuestionNum = StringUtils.strip(qNum);
         
         int answer = Integer.parseInt(cleanedAnswer);
         dList.updateAverageAnswer(cleanedQuestionNum, answer);
@@ -740,6 +697,21 @@ public class SurveyManager extends javax.swing.JFrame {
     {
         bTree.addNode(Integer.parseInt(qn), question);
     }
+    
+    //Method called from BinaryTree traversal method
+    //Responsible for adding new item to Hash Table
+    public void AddToHashMap(String qn, String question)
+    {
+        binaryTreeHashMap.put(qn, question);
+    }
+            
+    //Method called when printing function required
+    //Responsible for exporting inputted object to CSV file
+    public void PrintObjectToCSV()
+    {
+        
+    }
+    
     
     //<editor-fold defaultstate="collapsed" desc="Sorting Algorithms -- Bubble, Selection, Insertion">
     
@@ -890,15 +862,11 @@ public class SurveyManager extends javax.swing.JFrame {
     public javax.swing.JButton btnDisplayInOrder;
     public javax.swing.JButton btnDisplayPostOrder;
     public javax.swing.JButton btnDisplayPreOrder;
-    public javax.swing.JButton btnEndServer;
     public javax.swing.JButton btnSaveInOrder;
-    public javax.swing.JButton btnSavePostOrder;
-    public javax.swing.JButton btnSavePreOrder;
     public javax.swing.JButton btnSendQuestion;
     public javax.swing.JButton btnSortQN;
     public javax.swing.JButton btnSortQuestion;
     public javax.swing.JButton btnSortTopic;
-    private javax.swing.JButton btnStartServer;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -922,7 +890,6 @@ public class SurveyManager extends javax.swing.JFrame {
     public javax.swing.JLabel lblPreOrder;
     public javax.swing.JLabel lblQN;
     public javax.swing.JLabel lblQuestionNum;
-    private javax.swing.JLabel lblServer;
     public javax.swing.JLabel lblSortBy;
     public javax.swing.JLabel lblTopic;
     private javax.swing.JPanel pnlQuestionDetail;

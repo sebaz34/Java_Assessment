@@ -138,6 +138,23 @@ public class BinaryTree {
 		}
 
 	}
+        
+        public void inOrderTraverseTreeHashReturn(Node focusNode)
+        {
+            if (focusNode != null) {
+
+			// Traverse the left node
+
+			inOrderTraverseTree(focusNode.leftChild);
+
+			// Visit the currently focused on node
+			//System.out.println(focusNode);
+                        
+                        sm.AddToHashMap(Integer.toString(focusNode.key), focusNode.name);
+                        
+			// Traverse the right node
+			inOrderTraverseTree(focusNode.rightChild);
+        }}
 
 	public Node findNode(int key) {
 

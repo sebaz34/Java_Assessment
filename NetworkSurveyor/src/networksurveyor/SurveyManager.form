@@ -63,7 +63,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" pref="460" max="32767" attributes="0"/>
                           <Component id="jPanel3" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
@@ -413,19 +413,7 @@
                   <Component id="btnSortTopic" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSortQuestion" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="btnStartServer" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btnEndServer" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="lblServer" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <EmptySpace pref="184" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -440,14 +428,6 @@
                       <Component id="btnSortQuestion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="12" max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="lblServer" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnEndServer" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnStartServer" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -497,31 +477,6 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnEndServer">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="End"/>
-            <Property name="name" type="java.lang.String" value="btnEndServer" noResource="true"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEndServerActionPerformed"/>
-          </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblServer">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Server"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnStartServer">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Start"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnStartServerActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -673,29 +628,34 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                  <Component id="btnDisplayPreOrder" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnSavePreOrder" min="-2" pref="69" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="262" max="-2" attributes="0"/>
-                  <Component id="btnDisplayInOrder" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnSaveInOrder" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="328" max="32767" attributes="0"/>
-                  <Component id="btnDisplayPostOrder" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnSavePostOrder" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
-                  <Component id="lblPreOrder" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="372" max="-2" attributes="0"/>
-                  <Component id="lblInOrder" min="-2" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                          <Component id="lblPreOrder" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="372" max="-2" attributes="0"/>
+                          <Component id="lblInOrder" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                          <Component id="btnDisplayPreOrder" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="300" max="-2" attributes="0"/>
+                          <Component id="btnDisplayInOrder" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnSaveInOrder" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="lblPostOrder" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="lblPostOrder" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="btnDisplayPostOrder" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -710,11 +670,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnDisplayPreOrder" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnSavePreOrder" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnDisplayInOrder" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnSaveInOrder" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnDisplayPostOrder" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnSavePostOrder" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="39" max="32767" attributes="0"/>
               </Group>
@@ -739,15 +697,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDisplayPreOrderActionPerformed"/>
           </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnSavePreOrder">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Save"/>
-            <Property name="name" type="java.lang.String" value="btnSavePre-Order" noResource="true"/>
-          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
@@ -778,6 +727,9 @@
             <Property name="text" type="java.lang.String" value="Save"/>
             <Property name="name" type="java.lang.String" value="btnSaveIn-Order" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveInOrderActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
@@ -799,15 +751,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDisplayPostOrderActionPerformed"/>
           </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnSavePostOrder">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Save"/>
-            <Property name="name" type="java.lang.String" value="btnSavePost-Order" noResource="true"/>
-          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
