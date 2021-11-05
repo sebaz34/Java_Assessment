@@ -5,6 +5,11 @@
  */
 package networksurveyor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
@@ -589,7 +594,7 @@ public class SurveyManager extends javax.swing.JFrame {
 
     private void btnSaveInOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveInOrderActionPerformed
         bTree.inOrderTraverseTreeHashReturn(bTree.root);
-        
+        PrintObjectToCSV(binaryTreeHashMap);
         
     }//GEN-LAST:event_btnSaveInOrderActionPerformed
 
@@ -707,9 +712,23 @@ public class SurveyManager extends javax.swing.JFrame {
             
     //Method called when printing function required
     //Responsible for exporting inputted object to CSV file
-    public void PrintObjectToCSV()
+    public void PrintObjectToCSV(HashMap<String, String> binaryTreeHash)
     {
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
         
+        String fileName = "BinaryTreeHashMap -- " + LocalDateTime.now().format(myFormatObj) + ".csv";
+        
+        System.out.print(fileName);
+        
+        try(PrintWriter writer = new PrintWriter(new File(fileName)))
+        {
+            writer.write(binaryTreeHashMap.toString());
+            writer.close();
+        }
+        catch(FileNotFoundException e)
+        {
+            System.out.print("File Not Found Exception:" + e);
+        }
     }
     
     

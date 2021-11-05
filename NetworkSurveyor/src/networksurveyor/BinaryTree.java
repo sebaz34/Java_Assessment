@@ -145,7 +145,7 @@ public class BinaryTree {
 
 			// Traverse the left node
 
-			inOrderTraverseTree(focusNode.leftChild);
+			inOrderTraverseTreeHashReturn(focusNode.leftChild);
 
 			// Visit the currently focused on node
 			//System.out.println(focusNode);
@@ -153,7 +153,7 @@ public class BinaryTree {
                         sm.AddToHashMap(Integer.toString(focusNode.key), focusNode.name);
                         
 			// Traverse the right node
-			inOrderTraverseTree(focusNode.rightChild);
+			inOrderTraverseTreeHashReturn(focusNode.rightChild);
         }}
 
 	public Node findNode(int key) {
