@@ -13,7 +13,7 @@ public class NetworkSurveyor {
     //Global variables
     MyModel questionTableModel;
     JTable table;
-    String fileName = "SurveyByNetwork_SampleData.txt";
+    String fileName = "SurveyByNetwork_IdealSampleData.txt";
     ArrayList<Question> questionList = new ArrayList();
     
 

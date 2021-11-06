@@ -1,8 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+  Copyright 2021 Software Solutions on behalf of Fantastic Feedback
+Author: Sebastian Vowels
+
+
+*********************************************************
+License for Apache Commons Lang Library:
+Copyright 2021 Fantastic Feedback
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*********************************************************
+*/
+
 package networksurveyor;
 
 import java.io.File;
@@ -14,9 +32,7 @@ import java.util.ArrayList;
 import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
 
-/**
- * @author sebas
- */
+
 
 public class SurveyManager extends javax.swing.JFrame {
 
@@ -32,9 +48,17 @@ public class SurveyManager extends javax.swing.JFrame {
     
     //<editor-fold defaultstate="collapsed" desc="System Generated Code -- INCLUDING MAIN()">
     
-    /**
-     * Creates new form SurveyManager
-     */
+/****************************************************************
+   PROGRAM:   Survey Manager
+   AUTHOR:    Sebastian Vowels
+
+   FUNCTION:  To facilitate the execution of a survey over a network remotely.
+
+   INPUT:     File stored on hard drive. Answer responses.
+
+   OUTPUT:    Questions to client programs. Collation of responses.
+
+****************************************************************/
     public SurveyManager() {
         initComponents();
     }
@@ -526,6 +550,18 @@ public class SurveyManager extends javax.swing.JFrame {
         insertionSortQuestion();
     }//GEN-LAST:event_btnSortQuestionActionPerformed
 
+    /****************************************************************
+
+   FUNCTION:   btnSendQuestionActionPerformed
+
+   ARGUMENTS:  ActionEvent
+
+   RETURNS:    void
+
+   NOTES:      Creates two objects - sentQuestion and qSentQuestion.
+   *           sentQuestion is sent to chat server to be sent to clients.
+   *           qSentQuestion is sent to the Linked List and Binary Tree.
+****************************************************************/
     private void btnSendQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendQuestionActionPerformed
         //Obtain and store in memory the selected question data
         Question qSentQuestion = new Question();
@@ -638,16 +674,36 @@ public class SurveyManager extends javax.swing.JFrame {
     
     //<editor-fold defaultstate="collapsed" desc="Background Functionality -- Table Model Setup, Monitoring Answer Totals">
     
-    //Method called when setting up table
-    //Returns JTable Model for table
+
+    /****************************************************************
+
+   FUNCTION:   setTableModel()
+
+   ARGUMENTS:  None
+
+   RETURNS:    MyModel
+
+   NOTES:      Method called when setting up table
+               Returns JTable Model for table
+****************************************************************/
     public MyModel setTableModel()
     {
         globalTableModel = ns.getTableModel();
         return globalTableModel;
     }
     
-    //Method called from ChatClient class
-    //Responsible for maintaing current answer values in linked list
+
+    /****************************************************************
+
+   FUNCTION:   UpdateLinkedList()
+
+   ARGUMENTS:  String qNum, String qAnswer
+
+   RETURNS:    void
+
+   NOTES:      Method called from ChatClient class
+   *           Responsible for maintaining current answer values in linked list txt field
+****************************************************************/
     public void UpdateLinkedList(String qNum, String qAnswer)
     {
         //Clean variables because java is silly
@@ -662,9 +718,19 @@ public class SurveyManager extends javax.swing.JFrame {
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="UI Methods -- Methods Called When UI Interaction Occurs">
-    
-    //Method called when line in table is selected
+       
+    /****************************************************************
+
+   FUNCTION:   DisplayQuestion()
+
+   ARGUMENTS:  int row
+
+   RETURNS:    void
+
+   NOTES:          //Method called when line in table is selected
     //Responsible for assinging question values to right pane
+****************************************************************/
+    
     public void DisplayQuestion(int row)
     {
         //Bring over questionList array from NetworkSurveyor
@@ -682,8 +748,17 @@ public class SurveyManager extends javax.swing.JFrame {
         txtQAnswerE.setText(currentQuestion.answerE);
     }
     
-    //Method called when send button is pressed
+    /****************************************************************
+
+   FUNCTION:   SendLinkedList()
+
+   ARGUMENTS:  Question sentQuestion
+
+   RETURNS:    void
+
+   NOTES:          //Method called when send button is pressed
     //Responsible for creating new Linked List object
+****************************************************************/
     public void SendLinkedList(Question sentQuestion){
 
         //Create node with contents of this questions
@@ -696,28 +771,60 @@ public class SurveyManager extends javax.swing.JFrame {
         UpdateLLTxtField();
     }
     
-    //Method called when send button is pressed
+
+    /****************************************************************
+
+   FUNCTION:   SendBinaryTree()
+
+   ARGUMENTS:  String qn, String question
+
+   RETURNS:    void
+
+   NOTES:          //Method called when send button is pressed
     //Responsible for creating a new entry in the binary tree
+****************************************************************/
     public void SendBinaryTree(String qn, String question)
     {
         bTree.addNode(Integer.parseInt(qn), question);
     }
     
-    //Method called from BinaryTree traversal method
+
+    /****************************************************************
+
+   FUNCTION:   AddToHashMap()
+
+   ARGUMENTS:  String qn, String question
+
+   RETURNS:    void
+
+   NOTES:          //Method called from BinaryTree traversal method
     //Responsible for adding new item to Hash Table
+****************************************************************/
     public void AddToHashMap(String qn, String question)
     {
         binaryTreeHashMap.put(qn, question);
     }
             
-    //Method called when printing function required
+
+    /****************************************************************
+
+   FUNCTION:   PrintObjectToCSV
+
+   ARGUMENTS:  HashMap<String, String> binaryTreeHash
+
+   RETURNS:    void
+
+   NOTES:          //Method called when printing function required
     //Responsible for exporting inputted object to CSV file
+****************************************************************/
+
     public void PrintObjectToCSV(HashMap<String, String> binaryTreeHash)
     {
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
         
         String fileName = "BinaryTreeHashMap -- " + LocalDateTime.now().format(myFormatObj) + ".csv";
         
+        //Debugging
         System.out.print(fileName);
         
         try(PrintWriter writer = new PrintWriter(new File(fileName)))
@@ -734,8 +841,18 @@ public class SurveyManager extends javax.swing.JFrame {
     
     //<editor-fold defaultstate="collapsed" desc="Sorting Algorithms -- Bubble, Selection, Insertion">
     
-    //Run when QN# button is pressed
+
+    /****************************************************************
+
+   FUNCTION:   bubbleSortQN()
+
+   ARGUMENTS:  none
+
+   RETURNS:    void
+
+   NOTES:          //Run when QN# button is pressed
     //Used to sort question data by question number element
+****************************************************************/
     public void bubbleSortQN()
     {
         //Bring over questionList array from NetworkSurveyor
@@ -760,8 +877,19 @@ public class SurveyManager extends javax.swing.JFrame {
         globalTableModel.fireTableDataChanged();
     }
 
-    //Run when Topic button is pressed
+
+    /****************************************************************
+
+   FUNCTION:   selectionSortTopic()
+
+   ARGUMENTS:  none
+
+   RETURNS:    void
+
+   NOTES:          //Run when Topic button is pressed
     //Used to sort question data by topic element
+****************************************************************/
+
     public void selctionSortTopic()
     {
         ArrayList<Question> masterList = ns.getQuestionListFromMemory();
@@ -803,8 +931,18 @@ public class SurveyManager extends javax.swing.JFrame {
         globalTableModel.fireTableDataChanged();
     }       
     
-    //Run when Question button is pressed
+
+    /****************************************************************
+
+   FUNCTION:   insertionSortQuestion()
+
+   ARGUMENTS:  none
+
+   RETURNS:    void
+
+   NOTES:          //Run when Question button is pressed
     //Used to sort question data by question element
+****************************************************************/
     public void insertionSortQuestion()
     {
         ArrayList<Question> masterList = ns.getQuestionListFromMemory();
@@ -856,19 +994,50 @@ public class SurveyManager extends javax.swing.JFrame {
     
     //<editor-fold defaultstate="collapsed" desc="Text Field Updates -- Methods Responsible for Updating Text Fields When Required">
     
-    //Method called at the end of method responsible for send button action
+
+    /****************************************************************
+
+   FUNCTION:   UpdateLLTxtField()
+
+   ARGUMENTS:  none
+
+   RETURNS:    void
+
+   NOTES:          //Method called at the end of method responsible for send button action
     //Used to update the LLTxtField with the current values of the Linked List
+****************************************************************/
     public void UpdateLLTxtField()
     {
         String printValue = dList.print();
         txtLinkedList.setText(printValue);
     }
     
+    /****************************************************************
+
+   FUNCTION:   UpdateBTTxtField()
+
+   ARGUMENTS:  none
+
+   RETURNS:    void
+
+   NOTES:      Method called when binary tree transversal has found a new node
+****************************************************************/
+
     public void UpdateBTTxtField(int qn, String question)
     {
         txtBinaryTree.append("--" + Integer.toString(qn) + ": " + question);
     }
     
+    /****************************************************************
+
+   FUNCTION:   ClearBTTxtField()
+
+   ARGUMENTS:  none
+
+   RETURNS:    void
+
+   NOTES:      Clears txtBinaryTree.
+****************************************************************/  
     public void ClearBTTxtField()
     {
         txtBinaryTree.setText("");

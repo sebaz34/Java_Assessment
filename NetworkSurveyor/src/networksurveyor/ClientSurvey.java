@@ -1,21 +1,27 @@
+
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  Copyright 2021 Software Solutions on behalf of Fantastic Feedback
+Author: Sebastian Vowels
+
  */
+
 package networksurveyor;
 
-/**
- *
- * @author Sebastian
- */
+
 public class ClientSurvey extends javax.swing.JFrame {
 
     ChatClient surveyClient = new ChatClient("", 7777, this);
     
-    /**
-     * Creates new form ClientSurvey
-     */
+/****************************************************************
+   PROGRAM:   Client Survey
+   AUTHOR:    Sebastian Vowels
+
+   FUNCTION:  To facilitate the responding to various questions within a survey.
+   * 
+   INPUT:     Questions received via network from survey manager.
+
+   OUTPUT:    Answer message sent to survey manager.
+****************************************************************/
     public ClientSurvey() {
         initComponents();
     }
@@ -263,11 +269,11 @@ public class ClientSurvey extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
-        surveyClient.connect("localhost", 7777);
+
     }//GEN-LAST:event_btnConnectActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        this.dispose();
+
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
@@ -309,7 +315,18 @@ public class ClientSurvey extends javax.swing.JFrame {
         });
     }
 
-    //Method used to compile and send message to be sent
+
+    /****************************************************************
+
+   FUNCTION:   CompileMessage()
+
+   ARGUMENTS:  none
+
+   RETURNS:    void
+
+   NOTES:          //Method used to compile and send message to be sent
+****************************************************************/
+
     private void compileMessage()
     {
         int answer;

@@ -1,0 +1,64 @@
+11
+
+All the requirements were identified.
+Strongly Agree
+Agree
+Partly Agree
+Disagree
+Strongly Disagree
+12
+
+All the requirements were recorded.
+Strongly Agree
+Agree
+Partly Agree
+Disagree
+Strongly Disagree
+13
+
+An ERD was prepared
+Accurate
+Fairly accurate
+Partly Accurate
+Fairly Inaccurate
+Substantially Inaccurate
+41
+
+DFD were prepared.
+Accurate
+Fairly accurate
+Partly Accurate
+Fairly Inaccurate
+Substantially Inaccurate
+42
+
+The screen designs match the project requirements.
+Strongly Agree
+Agree
+Partly Agree
+Disagree
+Strongly Disagree
+43
+
+The report designs match the project requirements.
+Strongly Agree
+Agree
+Partly Agree
+Disagree
+Strongly Disagree
+71
+
+The developed screens match the design provided.
+Strongly Agree
+Agree
+Partly Agree
+Disagree
+Strongly Disagree
+72
+
+The developed screens are professionally prepared.
+Strongly Agree
+Agree
+Partly Agree
+Disagree
+Strongly Disagree
